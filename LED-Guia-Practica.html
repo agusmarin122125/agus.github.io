@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lógica y Estructuras Discretas — Guía Práctica Completa</title>
+<style>
+:root{
+  --navy:#152238; --navy2:#1f3457; --gold:#b8863b; --gold-l:#e4c489;
+  --paper:#faf9f6; --paper2:#f2f0ea; --ink:#20241f; --ink-soft:#4a5049;
+  --line:#dcd8cc; --good:#2f6d4f; --bad:#a13d3d; --code:#f4f1e8;
+  --maxw:800px; --radius:3px;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif;
+  line-height:1.65; font-size:17px;
+}
+h1,h2,h3,h4{
+  font-family: "Trebuchet MS", "Segoe UI", -apple-system, sans-serif;
+  color:var(--navy); line-height:1.25; font-weight:700;
+}
+.layout{display:flex; min-height:100vh;}
+nav#side{
+  width:300px; flex:0 0 300px; background:var(--navy); color:#e9e6da;
+  padding:22px 0 90px 0; position:sticky; top:0; height:100vh; overflow-y:auto;
+}
+nav#side::-webkit-scrollbar{width:8px;}
+nav#side::-webkit-scrollbar-thumb{background:#3a4c6e; border-radius:4px;}
+.brand{padding:0 22px 18px 22px; border-bottom:1px solid #2c3f60; margin-bottom:10px;}
+.brand .k{font-family:"Trebuchet MS",sans-serif; letter-spacing:.04em; font-size:12px; color:var(--gold-l); text-transform:uppercase;}
+.brand h1{color:#fff; font-size:21px; margin:4px 0 2px 0;}
+.brand p{margin:0; font-size:12.5px; color:#a9b4c9; font-family:"Trebuchet MS",sans-serif;}
+.navgroup{margin:6px 0;}
+.navgroup > summary{
+  cursor:pointer; padding:10px 22px; font-family:"Trebuchet MS",sans-serif;
+  font-weight:700; font-size:14.5px; color:#f2ead8; list-style:none;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.navgroup > summary::-webkit-details-marker{display:none;}
+.navgroup > summary:hover{background:#20335a;}
+.navgroup > summary::after{content:"▸"; color:var(--gold-l); transition:transform .15s;}
+.navgroup[open] > summary::after{transform:rotate(90deg);}
+.navgroup ul{list-style:none; margin:0; padding:2px 0 8px 0;}
+.navgroup a{
+  display:block; padding:7px 22px 7px 34px; color:#c3cbdc; text-decoration:none;
+  font-family:"Trebuchet MS",sans-serif; font-size:13.3px; border-left:3px solid transparent;
+}
+.navgroup a:hover{color:#fff; background:#20335a; border-left-color:var(--gold);}
+main{flex:1 1 auto; min-width:0;}
+.topbar{
+  position:sticky; top:0; z-index:5; background:rgba(250,249,246,.94); backdrop-filter:blur(4px);
+  border-bottom:1px solid var(--line); padding:10px 40px; display:flex; justify-content:flex-end; gap:10px;
+}
+.topbar button{
+  font-family:"Trebuchet MS",sans-serif; font-size:13px; background:var(--navy); color:#fff;
+  border:none; padding:8px 16px; border-radius:3px; cursor:pointer;
+}
+.topbar button:hover{background:var(--navy2);}
+.wrap{max-width:var(--maxw); margin:0 auto; padding:38px 40px 120px 40px;}
+.cover{
+  min-height:70vh; display:flex; flex-direction:column; justify-content:center;
+  border-bottom:3px double var(--gold); margin-bottom:40px; padding-bottom:30px;
+}
+.cover .k{font-family:"Trebuchet MS",sans-serif; color:var(--gold); letter-spacing:.12em; text-transform:uppercase; font-size:13px;}
+.cover h1{font-size:44px; margin:10px 0 6px 0;}
+.cover h2{font-size:20px; color:var(--ink-soft); font-weight:400; font-style:italic; margin:0 0 22px 0;}
+.cover .meta{font-family:"Trebuchet MS",sans-serif; font-size:14px; color:var(--ink-soft); line-height:2;}
+.unit-title{
+  margin-top:64px; padding-top:18px; border-top:3px double var(--gold);
+}
+.unit-title .k{font-family:"Trebuchet MS",sans-serif; color:var(--gold); letter-spacing:.1em; text-transform:uppercase; font-size:13px;}
+.unit-title h2{font-size:32px; margin:4px 0 14px 0;}
+.unit-intro{color:var(--ink-soft); font-size:16px;}
+h3.topic{font-size:24px; margin-top:46px; padding-bottom:6px; border-bottom:1px solid var(--line);}
+h4.subtopic{font-size:18.5px; margin-top:28px; color:var(--navy2);}
+p{margin:12px 0;}
+.box{border:1px solid var(--line); border-left:5px solid var(--navy); background:#fff;
+  padding:14px 18px; margin:18px 0; border-radius:0 var(--radius) var(--radius) 0;}
+.box .lbl{font-family:"Trebuchet MS",sans-serif; font-weight:700; font-size:12.5px;
+  color:var(--navy); text-transform:uppercase; letter-spacing:.05em; margin-bottom:6px;}
+.box.def{border-left-color:var(--navy);}
+.box.prop{border-left-color:var(--gold);}
+.box.ex{border-left-color:var(--good); background:#f6faf7;}
+.box.ex .lbl{color:var(--good);}
+.box.err{border-left-color:var(--bad); background:#fbf5f5;}
+.box.err .lbl{color:var(--bad);}
+.box.rel{border-left-color:#5a4a8a; background:#f8f6fb;}
+.box.rel .lbl{color:#5a4a8a;}
+table{border-collapse:collapse; width:100%; margin:16px 0; font-size:15.3px;}
+table.tv{width:auto; margin:14px auto;}
+th,td{border:1px solid var(--line); padding:6px 13px; text-align:center;}
+th{background:var(--navy); color:#fff; font-family:"Trebuchet MS",sans-serif; font-weight:600; font-size:13.5px;}
+td{background:#fff;}
+table.props td:first-child, table.props th:first-child{text-align:left; font-family:"Trebuchet MS",sans-serif; font-weight:700;}
+table.props td{text-align:left;}
+tr:nth-child(even) td{background:#f6f5f0;}
+.formula{
+  font-family:"Cambria Math", Georgia, serif; text-align:center; font-size:19px;
+  background:var(--code); border:1px solid var(--line); padding:12px; margin:14px 0; border-radius:3px;
+}
+code, .sym{font-family:Consolas,"Courier New",monospace; background:var(--code); padding:1px 5px; border-radius:2px;}
+.venn{display:block; margin:18px auto; max-width:340px;}
+.glossary dt{font-family:"Trebuchet MS",sans-serif; font-weight:700; color:var(--navy); margin-top:10px;}
+.glossary dd{margin:2px 0 8px 0;}
+details.repaso{border:1px solid var(--line); border-radius:3px; margin:10px 0; padding:10px 14px; background:#fff;}
+details.repaso summary{cursor:pointer; font-family:"Trebuchet MS",sans-serif; font-weight:600;}
+details.repaso .ans{margin-top:8px; padding-top:8px; border-top:1px dashed var(--line); color:var(--ink-soft);}
+.unit-summary{background:#fff; border:1px solid var(--line); border-radius:4px; padding:4px 22px; margin:30px 0;}
+.unit-summary h4{color:var(--navy);}
+footer.unitend{text-align:center; color:#a09986; font-family:"Trebuchet MS",sans-serif; font-size:12.5px; margin:50px 0 10px 0;}
+.toc-index{columns:2; column-gap:34px;}
+.toc-index li{break-inside:avoid; margin-bottom:5px;}
+a{color:var(--navy2);}
+@media (max-width:880px){
+  .layout{flex-direction:column;}
+  nav#side{position:relative; width:100%; height:auto; flex:none;}
+  .wrap{padding:24px 18px 90px 18px;}
+  .topbar{padding:8px 18px;}
+}
+.solved{border:1px solid var(--line); border-radius:5px; background:#fff; margin:26px 0; overflow:hidden;}
+.solved-head{background:var(--navy); color:#fff; padding:10px 18px; display:flex; align-items:baseline; gap:12px;}
+.solved-head h4{color:#fff; margin:0; font-size:17px;}
+.solved-head .tag{font-family:"Trebuchet MS",sans-serif; font-size:11px; text-transform:uppercase; letter-spacing:.06em; background:var(--gold); color:#231a08; padding:2px 8px; border-radius:10px;}
+.statement{padding:14px 18px; font-style:italic; background:#f6f5f0; border-bottom:1px solid var(--line);}
+.step{padding:12px 18px; border-bottom:1px dashed var(--line);}
+.step:last-child{border-bottom:none;}
+.step .stepnum{display:block; font-family:"Trebuchet MS",sans-serif; font-weight:700; font-size:12.5px; color:var(--gold); text-transform:uppercase; letter-spacing:.04em; margin-bottom:5px;}
+.step.result{background:#f6faf7;}
+.step.result .stepnum{color:var(--good);}
+.level{border:1px solid var(--line); border-radius:4px; padding:6px 20px 14px 20px; margin:16px 0; background:#fff;}
+.level h4{font-family:"Trebuchet MS",sans-serif;}
+.level.basico{border-left:6px solid #4a7a58;}
+.level.intermedio{border-left:6px solid #b8863b;}
+.level.avanzado{border-left:6px solid #a13d3d;}
+.level ol{padding-left:22px;}
+.level li{margin:8px 0;}
+.solkey{padding:8px 0; border-bottom:1px solid var(--line); font-size:15.5px;}
+.solkey:last-child{border-bottom:none;}
+.examhead{background:var(--navy); color:#fff; padding:18px 22px; border-radius:5px; margin:30px 0 18px 0;}
+.examhead h3{color:#fff; border:none; margin:0;}
+.examhead p{margin:6px 0 0 0; color:#cfd6e6; font-family:"Trebuchet MS",sans-serif; font-size:13.5px;}
+.examq{border:1px solid var(--line); background:#fff; border-radius:4px; padding:12px 18px; margin:14px 0;}
+.examq .qn{font-family:"Trebuchet MS",sans-serif; font-weight:700; color:var(--navy); margin-right:6px;}
+@media print{
+  nav#side, .topbar{display:none !important;}
+  .layout{display:block;}
+  .wrap{max-width:100%; padding:0 8mm;}
+  a{color:inherit; text-decoration:none;}
+  .unit-title{page-break-before:always;}
+  .box, table{page-break-inside:avoid;}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<nav id="side">
+  <div class="brand">
+    <div class="k">Guía de estudio</div>
+    <h1>LED — Práctica</h1>
+    <p>UTN FRC &middot; 2026</p>
+  </div>
+  <details class="navgroup" open><summary>Inicio</summary><ul>
+    <li><a href="#top">Portada</a></li><li><a href="#indice">Índice</a></li>
+  </ul></details>
+  <details class="navgroup" open><summary>A · Resueltos</summary><ul>
+    <li><a href="#s-u1">Unidad 1</a></li>
+    <li><a href="#s-u2">Unidad 2</a></li>
+    <li><a href="#s-u3">Unidad 3</a></li>
+    <li><a href="#s-u4">Unidad 4</a></li>
+  </ul></details>
+  <details class="navgroup"><summary>B · Propuestos</summary><ul>
+    <li><a href="#p-u1">Unidad 1</a></li>
+    <li><a href="#p-u2">Unidad 2</a></li>
+    <li><a href="#p-u3">Unidad 3</a></li>
+    <li><a href="#p-u4">Unidad 4</a></li>
+  </ul></details>
+  <details class="navgroup"><summary>C · Solucionario</summary><ul>
+    <li><a href="#solucionario">Ver respuestas</a></li>
+  </ul></details>
+  <details class="navgroup"><summary>D · Parciales</summary><ul>
+    <li><a href="#parciales">Repaso y modelo</a></li>
+  </ul></details>
+</nav>
+
+<main id="top">
+  <div class="topbar">
+    <button onclick="window.print()">🖶 Imprimir / Guardar como PDF</button>
+  </div>
+  <div class="wrap">
+    
+<div class="cover">
+  <div class="k">Guía de estudio &middot; UTN FRC &middot; Año 2026</div>
+  <h1>Lógica y Estructuras Discretas</h1>
+  <h2>Guía Práctica completa — Unidades 1, 2, 3 y 4 (Conjuntos)</h2>
+  <div class="meta">
+    Ejercicios resueltos paso a paso &nbsp;·&nbsp; Ejercicios propuestos por nivel &nbsp;·&nbsp; Solucionario &nbsp;·&nbsp;
+    Preparación para parciales<br><br>
+    Documento complementario del <em>Resumen Teórico</em>. Se recomienda repasar la teoría de cada unidad antes
+    de intentar los ejercicios de esa unidad.<br><br>
+    Los ejercicios resueltos están basados en las guías de la cátedra; los ejercicios de práctica adicional y el
+    modelo de parcial son propuestos por este material con estilo y nivel equivalentes — se identifican
+    claramente como tales y no se presentan como ejercicios reales de examen.
+  </div>
+</div>
+<div class="unit-title" id="indice" style="border-top:none; margin-top:0;">
+  <div class="k">Índice</div><h2>Contenidos</h2>
+</div>
+<ul class="toc-index">
+  <li><a href="#resueltos">Parte A — Ejercicios resueltos paso a paso</a></li>
+  <li style="margin-left:14px;"><a href="#s-u1">Unidad 1 — Proposiciones</a></li>
+  <li style="margin-left:14px;"><a href="#s-u2">Unidad 2 — Predicados</a></li>
+  <li style="margin-left:14px;"><a href="#s-u3">Unidad 3 — Inducción</a></li>
+  <li style="margin-left:14px;"><a href="#s-u4">Unidad 4 — Conjuntos</a></li>
+  <li><a href="#propuestos">Parte B — Ejercicios propuestos (por nivel)</a></li>
+  <li style="margin-left:14px;"><a href="#p-u1">Unidad 1</a></li>
+  <li style="margin-left:14px;"><a href="#p-u2">Unidad 2</a></li>
+  <li style="margin-left:14px;"><a href="#p-u3">Unidad 3</a></li>
+  <li style="margin-left:14px;"><a href="#p-u4">Unidad 4</a></li>
+  <li><a href="#solucionario">Parte C — Solucionario de la Parte B</a></li>
+  <li><a href="#parciales">Parte D — Preparación para parciales y modelo de examen</a></li>
+</ul>
+
+    <div class="unit-title" id="resueltos" style="border-top:none;"><div class="k">Parte A</div><h2>Ejercicios resueltos paso a paso</h2><p class="unit-intro">Cada ejercicio sigue la misma estructura: interpretación del enunciado, conceptos teóricos necesarios, planteamiento, desarrollo completo y resultado final con verificación.</p></div><div class="unit-title" id="s-u1"><div class="k">Unidad 1</div><h2>Ejercicios resueltos — Lógica Proposicional</h2></div>
+<div class="solved">
+      <div class="solved-head"><span class="tag">Ejercicio de cátedra</span><h4>Ejercicio 1.1</h4></div>
+      <div class="statement">Confeccione la tabla de verdad de S: (p ∧ q) ↔ ~(p ∧ ~q) y establezca si es tautología, contradicción o contingencia.</div>
+      <div class="step"><span class="stepnum">Paso 1 · Interpretación del enunciado</span>Se pide construir la tabla de verdad completa de una proposición compuesta por dos proposiciones simples (p y q) combinadas con conjunción, negación y bicondicional, y clasificarla según sus valores de verdad resultantes. Pertenece al tema <em>Tablas de verdad y clasificación de proposiciones</em> (1.3.4).</div>
+      <div class="step"><span class="stepnum">Paso 2 · Conceptos teóricos necesarios</span>Se necesita: la definición de conjunción (∧), negación (~) y condicional doble (↔), y el criterio de clasificación: tautología si la columna final es toda V, contradicción si es toda F, contingencia si aparecen V y F.</div>
+      <div class="step"><span class="stepnum">Paso 3 · Planteamiento</span>Como hay 2 proposiciones simples, la tabla necesita 2²=4 filas. Se arma por columnas auxiliares en el orden: p, q, (p∧q), ~q, (p∧~q), ~(p∧~q), y finalmente la columna resultado S.</div>
+      <div class="step"><span class="stepnum">Paso 4 · Desarrollo completo</span><table class="tv"><tr><th>p</th><th>q</th><th>p∧q</th><th>~q</th><th>p∧~q</th><th>~(p∧~q)</th><th>S: (p∧q)↔~(p∧~q)</th></tr><tr><td>V</td><td>V</td><td>V</td><td>F</td><td>F</td><td>V</td><td>V</td></tr><tr><td>V</td><td>F</td><td>F</td><td>V</td><td>V</td><td>F</td><td>V</td></tr><tr><td>F</td><td>V</td><td>F</td><td>F</td><td>F</td><td>V</td><td>F</td></tr><tr><td>F</td><td>F</td><td>F</td><td>V</td><td>F</td><td>V</td><td>F</td></tr></table>Como la columna final de S no es toda V ni toda F (hay V y F), la proposición NO es tautología ni contradicción.</div>
+      <div class="step result"><span class="stepnum">Paso 5 · Resultado final</span><strong>S es una CONTINGENCIA.</strong> Verificación: alcanza con hallar una fila con V (fila 1) y otra con F (fila 3) para confirmarlo; no hace falta completar la tabla si sólo se pide clasificar, aunque aquí se completó para mostrar el procedimiento entero. Error común: confundir la columna intermedia (p∧~q) con la columna resultado — siempre se clasifica sobre la ÚLTIMA columna, la de la proposición pedida.</div>
+    </div>
+<div class="solved">
+      <div class="solved-head"><span class="tag">Ejercicio de cátedra</span><h4>Ejercicio 1.2</h4></div>
+      <div class="statement">Exprese en símbolos: «Viajaré a París o a Roma, si y solo si, es falso que dejo de trabajar o pierdo mis acciones», con p: viajaré a París, q: viajaré a Roma, r: dejo de trabajar, s: pierdo mis acciones. Luego determine si la expresión obtenida es tautología, contradicción o contingencia.</div>
+      <div class="step"><span class="stepnum">Paso 1 · Interpretación del enunciado</span>El enunciado combina cuatro proposiciones simples con disyunción, negación y bicondicional. Se pide primero traducir el lenguaje natural a notación simbólica, identificando bien el alcance de «es falso que» (que niega TODO lo que sigue, no sólo la primera parte), y luego clasificar la proposición resultante.</div>
+      <div class="step"><span class="stepnum">Paso 2 · Conceptos teóricos necesarios</span>Traducción de conectivos lingüísticos (Unidad 1, 1.3): «o» → ∨; «si y solo si» → ↔; «es falso que X o Y» → ~(X∨Y), aplicando la negación sobre la disyunción completa (no distribuida todavía).</div>
+      <div class="step"><span class="stepnum">Paso 3 · Planteamiento</span>Antecedente del bicondicional: «viajaré a París o a Roma» → (p∨q).<br>Consecuente: «es falso que, dejo de trabajar o pierdo mis acciones» → ~(r∨s).<br>Proposición completa: P(p,q,r,s): (p∨q) ↔ ~(r∨s).</div>
+      <div class="step"><span class="stepnum">Paso 4 · Desarrollo completo</span>Con 4 proposiciones simples la tabla tendría 2⁴=16 filas. En vez de construirla entera, conviene razonar por casos: ~(r∨s) es verdadera únicamente cuando r=F y s=F (por De Morgan, ~(r∨s)≡~r∧~s). En esa única combinación de r,s, el valor de P depende sólo de (p∨q): si p∨q es V, el bicondicional da V∧V=V; si p∨q es F, da F∧V=F. Para cualquier otra combinación de r,s (al menos una verdadera), ~(r∨s)=F, y el bicondicional será V sólo si (p∨q) también es F. Como p∨q toma tanto valores V como F según p y q, y lo mismo ocurre con ~(r∨s) según r y s, existen filas con resultado V y filas con resultado F.</div>
+      <div class="step result"><span class="stepnum">Paso 5 · Resultado final</span><strong>P(p,q,r,s) es una CONTINGENCIA</strong> (no es tautología porque existen combinaciones donde da F, por ejemplo p=V,q=F,r=F,s=V; no es contradicción porque existen combinaciones donde da V, por ejemplo p=F,q=F,r=F,s=F). Este ejercicio muestra que, con 4 variables, razonar por casos sobre los conectivos internos ahorra construir las 16 filas completas.</div>
+    </div>
+<div class="solved">
+      <div class="solved-head"><span class="tag">Ejercicio de cátedra</span><h4>Ejercicio 1.3</h4></div>
+      <div class="statement">Compruebe, usando tabla de verdad, que ~(p ∨ q) ≡ ~p ∧ ~q (Ley de De Morgan para la disyunción).</div>
+      <div class="step"><span class="stepnum">Paso 1 · Interpretación del enunciado</span>Se pide demostrar una equivalencia lógica entre dos proposiciones compuestas. Pertenece al tema <em>Equivalencia lógica</em> (1.4.1) y a las <em>Leyes lógicas</em> (1.4.3): es, de hecho, la demostración de una de las leyes de De Morgan.</div>
+      <div class="step"><span class="stepnum">Paso 2 · Conceptos teóricos necesarios</span>Se necesita la definición de equivalencia lógica: P≡Q es válida si P y Q tienen exactamente la misma tabla de verdad (mismos valores de verdad, fila a fila, para todas las combinaciones de p y q).</div>
+      <div class="step"><span class="stepnum">Paso 3 · Planteamiento</span>Se arman las dos proposiciones lado a lado en una sola tabla con 2²=4 filas, calculando primero las columnas auxiliares (p∨q, ~p, ~q) y luego cada lado de la equivalencia.</div>
+      <div class="step"><span class="stepnum">Paso 4 · Desarrollo completo</span><table class="tv"><tr><th>p</th><th>q</th><th>p∨q</th><th>~(p∨q)</th><th>~p</th><th>~q</th><th>~p∧~q</th></tr><tr><td>V</td><td>V</td><td>V</td><td>F</td><td>F</td><td>F</td><td>F</td></tr><tr><td>V</td><td>F</td><td>V</td><td>F</td><td>F</td><td>V</td><td>F</td></tr><tr><td>F</td><td>V</td><td>V</td><td>F</td><td>V</td><td>F</td><td>F</td></tr><tr><td>F</td><td>F</td><td>F</td><td>V</td><td>V</td><td>V</td><td>V</td></tr></table>Comparando la columna «~(p∨q)» con la columna «~p∧~q», ambas resultan idénticas fila a fila: F,F,F,V.</div>
+      <div class="step result"><span class="stepnum">Paso 5 · Resultado final</span><strong>Queda demostrado que ~(p∨q) ≡ ~p∧~q.</strong> ∎ Comprobación: alcanza con que UNA sola fila difiera para invalidar la equivalencia; aquí las cuatro coinciden, así que la ley queda confirmada. Esta misma técnica —armar ambos lados en la misma tabla y comparar columna final— sirve para comprobar cualquier equivalencia propuesta.</div>
+    </div>
+<div class="solved">
+      <div class="solved-head"><span class="tag">Ejercicio de cátedra</span><h4>Ejercicio 1.4</h4></div>
+      <div class="statement">Demuestre la validez del siguiente razonamiento usando el método de deducción algebraico: «Si estudio entonces no reprobaré el examen. Pero reprobé el examen. Por lo tanto, no estudié».</div>
+      <div class="step"><span class="stepnum">Paso 1 · Interpretación del enunciado</span>Es un razonamiento deductivo dado en lenguaje natural que hay que traducir a símbolos y luego validar. Se pide específicamente el método de <em>deducción algebraico</em> (1.4.7), no la tabla de verdad.</div>
+      <div class="step"><span class="stepnum">Paso 2 · Conceptos teóricos necesarios</span>Se necesitan las reglas de inferencia de la Unidad 1 (1.4.6), en particular el Modus Tollens: P→Q, ~Q ⊢ ~P.</div>
+      <div class="step"><span class="stepnum">Paso 3 · Planteamiento</span>Proposiciones simples: p: «estudio»; q: «repruebo el examen». Premisa 1: p → ~q (si estudio, no repruebo). Premisa 2: q (reprobé el examen). Conclusión a demostrar: ~p (no estudié).</div>
+      <div class="step"><span class="stepnum">Paso 4 · Desarrollo completo</span>Paso 1: p → ~q &nbsp;(premisa 1)<br>Paso 2: q &nbsp;(premisa 2)<br>Paso 3: ~(~q) ≡ q &nbsp;(equivalencia de doble negación, involución)<br>Paso 4: ~p &nbsp;— de los pasos 1 y 2, aplicando directamente <strong>Modus Tollens</strong> (P→Q, ~Q ⊢ ~P, tomando Q=~q, de modo que ~Q=q, que es exactamente la premisa 2).</div>
+      <div class="step result"><span class="stepnum">Paso 5 · Resultado final</span><strong>El razonamiento es válido</strong>: la conclusión ~p se deriva formalmente de las premisas por Modus Tollens. Verificación alternativa: la conjunción de premisas (p→~q)∧q, implicando a ~p, ((p→~q)∧q)→~p, es una tautología (puede comprobarse con una tabla de 4 filas), lo que confirma la validez por el otro método visto en la Unidad 1.</div>
+    </div>
+<footer class="unitend">— Fin de ejercicios resueltos, Unidad 1 —</footer><div class="unit-title" id="s-u2"><div class="k">Unidad 2</div><h2>Ejercicios resueltos — Lógica de Predicados</h2></div>
+<div class="solved">
+      <div class="solved-head"><span class="tag">Ejercicio de cátedra</span><h4>Ejercicio 2.1</h4></div>
+      <div class="statement">Sea A = {1,2,3,4,5}. Determine el valor de verdad de: a) ∃x/ x+3=10 &nbsp; b) ∀x: x+3&lt;10 &nbsp; c) ∀x: x+3≥7, sabiendo que x∈A.</div>
+      <div class="step"><span class="stepnum">Paso 1 · Interpretación del enunciado</span>Se pide evaluar tres proposiciones obtenidas al cuantificar la función proposicional «x+3 [relación] [número]» sobre un dominio finito y explícito A={1,2,3,4,5}. Tema: <em>Cuantificadores universal y existencial</em> (2.3.2), aplicados sobre un dominio finito, donde basta revisar caso por caso.</div>
+      <div class="step"><span class="stepnum">Paso 2 · Conceptos teóricos necesarios</span>El cuantificador existencial ∃x P(x) es verdadero si P(x) se cumple para AL MENOS UN elemento del dominio. El cuantificador universal ∀x P(x) es verdadero sólo si P(x) se cumple para TODOS los elementos, sin excepción.</div>
+      <div class="step"><span class="stepnum">Paso 3 · Planteamiento</span>Como el dominio es finito y pequeño (5 elementos), la estrategia es evaluar la función proposicional para cada uno de los 5 valores de A y luego aplicar la definición del cuantificador correspondiente.</div>
+      <div class="step"><span class="stepnum">Paso 4 · Desarrollo completo</span>a) x+3=10 → x=7. Como 7∉A, no hay ningún x en A que lo cumpla.<br>b) x+3&lt;10 para x=1..5: 4,5,6,7,8 — todos son &lt;10. Se cumple para TODOS los elementos de A.<br>c) x+3≥7 para x=1..5: 4,5,6,7,8. Aquí 4≥7 es FALSO (x=1) y 5≥7 es FALSO (x=2): ya hay un x de A que NO lo cumple, así que el universal ya no puede ser verdadero (basta un contraejemplo para invalidar un ∀).</div>
+      <div class="step result"><span class="stepnum">Paso 5 · Resultado final</span>a) <strong>FALSA</strong> (ningún elemento de A cumple x+3=10). b) <strong>VERDADERA</strong> (todos los elementos de A cumplen x+3&lt;10). c) <strong>FALSA</strong> (x=1 es un contraejemplo: 1+3=4, que no es ≥7). Error frecuente: para invalidar un ∀ basta UN contraejemplo; para validar un ∃ basta UN caso que cumpla — no hace falta revisar todo el dominio en ese caso, aunque aquí se revisó completo para mostrar el método.</div>
+    </div>
+<div class="solved">
+      <div class="solved-head"><span class="tag">Ejercicio de cátedra</span><h4>Ejercicio 2.2</h4></div>
+      <div class="statement">Clasifique según la definición de proposición categórica y represente en notación simbólica: P1: «Algunos alumnos son estudiosos». P4: «Ningún entero par es divisible por 3».</div>
+      <div class="step"><span class="stepnum">Paso 1 · Interpretación del enunciado</span>Se pide reconocer, en dos oraciones del lenguaje natural, cuál de las cuatro formas de proposición categórica corresponde (universal/particular, afirmativa/negativa) y traducirlas a notación con cuantificadores. Tema: <em>Proposiciones categóricas</em> (2.4).</div>
+      <div class="step"><span class="stepnum">Paso 2 · Conceptos teóricos necesarios</span>Las cuatro formas categóricas (2.4): Universal Afirmativa ∀x: x∈A→x∈B; Universal Negativa ∀x: x∈A→x∉B; Particular Afirmativa ∃x: x∈A∧x∈B; Particular Negativa ∃x: x∈A∧x∉B.</div>
+      <div class="step"><span class="stepnum">Paso 3 · Planteamiento</span>P1 usa la palabra «algunos» (cuantificador existencial) y afirma una propiedad → forma particular afirmativa. Se identifican las clases: A = alumnos, B = estudiosos.<br>P4 usa «ningún» (universal, con negación) → forma universal negativa. Se identifican las clases: A = enteros pares, B = divisibles por 3.</div>
+      <div class="step"><span class="stepnum">Paso 4 · Desarrollo completo</span>P1: Particular Afirmativa. En símbolos, con A: clase de los alumnos, B: clase de los estudiosos: ∃x: x∈A ∧ x∈B.<br>P4: Universal Negativa. Con A: clase de los enteros pares, B: clase de los divisibles por 3: ∀x: x∈A → x∉B.</div>
+      <div class="step result"><span class="stepnum">Paso 5 · Resultado final</span>P1 es <strong>Particular Afirmativa</strong>: ∃x: x∈A ∧ x∈B. P4 es <strong>Universal Negativa</strong>: ∀x: x∈A → x∉B. Regla práctica para reconocerlas: «todos/ningún» ⇒ universal (con →); «algunos» ⇒ particular (con ∧); la presencia de una negación («ningún», «no son») determina si es la variante negativa.</div>
+    </div>
+<div class="solved">
+      <div class="solved-head"><span class="tag">Ejercicio de cátedra</span><h4>Ejercicio 2.3</h4></div>
+      <div class="statement">Para el universo de todas las personas, con M(x): «x es profesor de matemática», C(x): «x ha estudiado cálculo», determine la validez del argumento: «Todos los profesores de matemática han estudiado cálculo. Ana es profesora de matemática. Por lo tanto, Ana ha estudiado cálculo».</div>
+      <div class="step"><span class="stepnum">Paso 1 · Interpretación del enunciado</span>Es un razonamiento con predicados cuantificados que combina una premisa universal con una premisa particular (sobre un individuo concreto, Ana). Tema: <em>Razonamiento en lógica de predicados de primer orden</em> (2.5.3), que exige las dos reglas de inferencia nuevas de esta unidad.</div>
+      <div class="step"><span class="stepnum">Paso 2 · Conceptos teóricos necesarios</span>Regla de Especificación Universal (2.5.3): si ∀x: P(x) es verdadera en un dominio D, entonces P(a) es verdadera para cualquier elemento a de D — en particular, para Ana.</div>
+      <div class="step"><span class="stepnum">Paso 3 · Planteamiento</span>Premisa 1: ∀x: M(x) → C(x). Premisa 2: M(Ana) [Ana es profesora de matemática]. Conclusión a validar: C(Ana) [Ana ha estudiado cálculo].</div>
+      <div class="step"><span class="stepnum">Paso 4 · Desarrollo completo</span>Paso 1: ∀x: M(x)→C(x) &nbsp;(premisa 1).<br>Paso 2: M(Ana)→C(Ana) &nbsp;— de paso 1, por Especificación Universal (se toma a=Ana, un elemento concreto del dominio).<br>Paso 3: M(Ana) &nbsp;(premisa 2).<br>Paso 4: C(Ana) &nbsp;— de los pasos 2 y 3, por Modus Ponens (regla de la Unidad 1, ya válida también aquí).</div>
+      <div class="step result"><span class="stepnum">Paso 5 · Resultado final</span><strong>El razonamiento es válido.</strong> Es, en esencia, el mismo esquema que el clásico silogismo «Todos los hombres son mortales; Sócrates es un hombre; luego Sócrates es mortal»: primero se particulariza la premisa universal al individuo en cuestión (Especificación Universal) y luego se aplica Modus Ponens, exactamente como en la Unidad 1.</div>
+    </div>
+<footer class="unitend">— Fin de ejercicios resueltos, Unidad 2 —</footer><div class="unit-title" id="s-u3"><div class="k">Unidad 3</div><h2>Ejercicios resueltos — Inducción Matemática</h2></div>
+<div class="solved">
+      <div class="solved-head"><span class="tag">Ejercicio de cátedra</span><h4>Ejercicio 3.1</h4></div>
+      <div class="statement">Aplicando el Principio de Inducción Matemática, verifique que la suma de los primeros n números naturales pares mayores que 0 es: Sₙ = 2+4+6+…+2n = n(n+1).</div>
+      <div class="step"><span class="stepnum">Paso 1 · Interpretación del enunciado</span>Se pide demostrar, no sólo verificar con casos, que una fórmula cerrada para la suma de los primeros n pares positivos vale para TODO natural n≥1. Tema: <em>Principio de Inducción Matemática</em> (3.3): hay que aplicar el método completo (base + hipótesis + paso inductivo), no alcanza con probar valores sueltos.</div>
+      <div class="step"><span class="stepnum">Paso 2 · Conceptos teóricos necesarios</span>Se necesita el Teorema del Principio de Inducción Matemática: si F(n₀) es verdadera (base) y F(k)→F(k+1) para todo k≥n₀ (paso, usando la hipótesis inductiva F(k)), entonces F(n) es verdadera para todo n≥n₀.</div>
+      <div class="step"><span class="stepnum">Paso 3 · Planteamiento</span>Se identifica F(n): «2+4+6+…+2n = n(n+1)». El primer natural para el que tiene sentido la suma es n=1 (n₀=1). Se organiza la demostración en Base, Hipótesis Inductiva y Paso Inductivo.</div>
+      <div class="step"><span class="stepnum">Paso 4 · Desarrollo completo</span><u>Base Inductiva</u> (n=1): S₁ = 2. Fórmula: 1·(1+1) = 2. Coinciden: la base se verifica.<br><br><u>Hipótesis Inductiva</u> (HI): se supone verdadera para n=k, con k≥1 arbitrario:<br>&nbsp;&nbsp;2+4+6+…+2k = k(k+1)<br><br><u>Paso Inductivo</u>: hay que demostrar que también vale para n=k+1, es decir:<br>&nbsp;&nbsp;2+4+…+2k+2(k+1) = (k+1)(k+2)<br>Partiendo del lado izquierdo y usando la HI:<br>&nbsp;&nbsp;2+4+…+2k+2(k+1) = [k(k+1)] + 2(k+1) &nbsp;(se reemplazó por HI la suma hasta 2k)<br>&nbsp;&nbsp;= (k+1)·[k+2] &nbsp;(factor común (k+1))<br>&nbsp;&nbsp;= (k+1)(k+2)<br>que es exactamente el lado derecho que había que obtener.</div>
+      <div class="step result"><span class="stepnum">Paso 5 · Resultado final</span><strong>Queda demostrado que Sₙ = 2+4+…+2n = n(n+1) para todo natural n≥1.</strong> ∎ Comprobación rápida: para n=4, la fórmula da 4·5=20, y en efecto 2+4+6+8=20. Error frecuente: dar por «demostrado» el resultado sólo por chequear numéricamente un par de valores de n — eso es evidencia, no demostración; la inducción es lo único que garantiza el «para todo n».</div>
+    </div>
+<div class="solved">
+      <div class="solved-head"><span class="tag">Ejercicio de cátedra</span><h4>Ejercicio 3.2</h4></div>
+      <div class="statement">Demuestre por inducción matemática que la siguiente expresión es verdadera para todo n≥1: Sₙ = 1·2 + 2·3 + 3·4 + … + n(n+1) = n(n+1)(n+2) / 3.</div>
+      <div class="step"><span class="stepnum">Paso 1 · Interpretación del enunciado</span>Nuevamente se pide una demostración formal (no verificación numérica) de una fórmula de suma. La particularidad es que cada término de la suma es un producto de dos consecutivos, k(k+1), y la fórmula final involucra tres factores consecutivos, lo cual exige más cuidado algebraico en el paso inductivo.</div>
+      <div class="step"><span class="stepnum">Paso 2 · Conceptos teóricos necesarios</span>Principio de Inducción Matemática (3.3) y manejo algebraico de factor común, tal como en los ejemplos del apunte para sumas de cuadrados y cubos.</div>
+      <div class="step"><span class="stepnum">Paso 3 · Planteamiento</span>F(n): «1·2+2·3+…+n(n+1) = n(n+1)(n+2)/3». Base en n₀=1. Hipótesis inductiva sobre n=k. Objetivo del paso inductivo: n=k+1.</div>
+      <div class="step"><span class="stepnum">Paso 4 · Desarrollo completo</span><u>Base Inductiva</u> (n=1): lado izquierdo = 1·2 = 2. Lado derecho = 1·2·3/3 = 6/3 = 2. Coinciden.<br><br><u>Hipótesis Inductiva</u> (HI), para n=k: 1·2+2·3+…+k(k+1) = k(k+1)(k+2)/3.<br><br><u>Paso Inductivo</u>: probar para n=k+1: 1·2+…+k(k+1)+(k+1)(k+2) = (k+1)(k+2)(k+3)/3.<br>1·2+…+k(k+1)+(k+1)(k+2) = [k(k+1)(k+2)/3] + (k+1)(k+2) &nbsp;(por HI)<br>&nbsp;&nbsp;= [k(k+1)(k+2) + 3(k+1)(k+2)] / 3 &nbsp;(denominador común 3)<br>&nbsp;&nbsp;= (k+1)(k+2)·(k+3) / 3 &nbsp;(factor común (k+1)(k+2), quedando k+3 al sacar k+3)<br>que coincide con el lado derecho buscado, (k+1)(k+2)(k+3)/3.</div>
+      <div class="step result"><span class="stepnum">Paso 5 · Resultado final</span><strong>Queda demostrado por inducción matemática que Sₙ = n(n+1)(n+2)/3, para todo n≥1.</strong> ∎ El paso clave del álgebra es reconocer el factor común (k+1)(k+2) en ambos sumandos antes de sumar — es el mismo tipo de maniobra en todas las demostraciones de sumas por inducción: sacar factor común de lo que ya está probado (HI) más el término nuevo agregado.</div>
+    </div>
+<footer class="unitend">— Fin de ejercicios resueltos, Unidad 3 —</footer><div class="unit-title" id="s-u4"><div class="k">Unidad 4</div><h2>Ejercicios resueltos — Conjuntos</h2></div>
+<div class="solved">
+      <div class="solved-head"><span class="tag">Ejercicio de cátedra</span><h4>Ejercicio 4.1</h4></div>
+      <div class="statement">Sea U={1,2,3,4,5,6,7,8,9,10}, A={1,2} y B={2,4,6,8,10}. Indique la verdad o falsedad de: a) 1∈A &nbsp; b) 9∈B &nbsp; c) 1∈A ∧ 1∈B &nbsp; d) 4∈A → 4∈U &nbsp; e) 3∈A → 8∈U.</div>
+      <div class="step"><span class="stepnum">Paso 1 · Interpretación del enunciado</span>Se pide evaluar proposiciones de pertenencia simples y compuestas (con ∧ y →) sobre conjuntos dados por extensión. Tema: <em>Pertenencia</em> (4.2.1) combinada con los conectivos lógicos ya vistos en la Unidad 1 — cada proposición de pertenencia (x∈A) es, en sí misma, una proposición lógica con su propio valor de verdad.</div>
+      <div class="step"><span class="stepnum">Paso 2 · Conceptos teóricos necesarios</span>Definición de pertenencia (x∈A / x∉A) y las tablas de verdad de la conjunción y el condicional simple de la Unidad 1 (en particular: un condicional con antecedente falso es siempre verdadero).</div>
+      <div class="step"><span class="stepnum">Paso 3 · Planteamiento</span>Se evalúa primero cada proposición atómica de pertenencia consultando los conjuntos dados, y luego se aplica el conectivo correspondiente sobre esos valores de verdad ya obtenidos.</div>
+      <div class="step"><span class="stepnum">Paso 4 · Desarrollo completo</span>a) 1∈A: A={1,2}, y 1 sí está → VERDADERA.<br>b) 9∈B: B={2,4,6,8,10}, y 9 no está → FALSA.<br>c) 1∈A ∧ 1∈B: 1∈A es V (visto en a); 1∈B es F (1 no está en B) → V∧F = FALSA.<br>d) 4∈A → 4∈U: 4∈A es F (A={1,2}, no tiene al 4); un condicional con antecedente falso es siempre verdadero, sin importar el consecuente → VERDADERA.<br>e) 3∈A → 8∈U: 3∈A es F (antecedente falso) → el condicional es VERDADERA, independientemente de que 8∈U sea verdadera (lo es, U los tiene a todos del 1 al 10).</div>
+      <div class="step result"><span class="stepnum">Paso 5 · Resultado final</span>a) <strong>V</strong>. b) <strong>F</strong>. c) <strong>F</strong>. d) <strong>V</strong>. e) <strong>V</strong>. Error frecuente: en d) y e), querer evaluar el consecuente antes de notar que el antecedente ya es falso — conviene siempre chequear primero el antecedente en un condicional, porque si es falso el resultado ya está definido (verdadero) sin más cálculo.</div>
+    </div>
+<div class="solved">
+      <div class="solved-head"><span class="tag">Ejercicio de cátedra</span><h4>Ejercicio 4.2</h4></div>
+      <div class="statement">Sea U={0,1,2,…,9}, A={1,4,7,9}, B={1,2,3,4,5}, C={2,4,6,8}. Determine por extensión: a) B∪U &nbsp; b) B∩(C−A) &nbsp; c) (A∩B)∪C.</div>
+      <div class="step"><span class="stepnum">Paso 1 · Interpretación del enunciado</span>Se pide calcular tres conjuntos resultantes de combinar unión, intersección y diferencia sobre conjuntos dados por extensión, respetando la precedencia (primero lo que está entre paréntesis). Tema: <em>Operaciones con conjuntos</em> (4.4): complementación relativa (diferencia), intersección y unión.</div>
+      <div class="step"><span class="stepnum">Paso 2 · Conceptos teóricos necesarios</span>Definiciones: A∪B = elementos de A o de B (o ambos); A∩B = elementos comunes a A y B; B−A = elementos de B que no están en A. Conviene resolver primero las operaciones entre paréntesis (cálculos intermedios).</div>
+      <div class="step"><span class="stepnum">Paso 3 · Planteamiento</span>b) exige primero calcular C−A antes de intersecar con B. c) exige primero A∩B antes de unir con C. Se listan los conjuntos dados para tener todo a la vista: U={0..9}, A={1,4,7,9}, B={1,2,3,4,5}, C={2,4,6,8}.</div>
+      <div class="step"><span class="stepnum">Paso 4 · Desarrollo completo</span>a) B∪U: como U contiene absolutamente todos los elementos posibles (incluidos los de B), B∪U = U.<br>&nbsp;&nbsp;B∪U = {0,1,2,3,4,5,6,7,8,9}.<br><br>b) Cálculo intermedio C−A: elementos de C={2,4,6,8} que NO están en A={1,4,7,9} → se descarta el 4 (está en A) → C−A={2,6,8}.<br>&nbsp;&nbsp;Ahora B∩(C−A): B={1,2,3,4,5} ∩ {2,6,8} → el único elemento común es 2.<br>&nbsp;&nbsp;B∩(C−A) = {2}.<br><br>c) Cálculo intermedio A∩B: A={1,4,7,9} ∩ B={1,2,3,4,5} → comunes: 1 y 4 → A∩B={1,4}.<br>&nbsp;&nbsp;Ahora (A∩B)∪C: {1,4} ∪ {2,4,6,8} → se listan todos sin repetir el 4 → {1,2,4,6,8}.</div>
+      <div class="step result"><span class="stepnum">Paso 5 · Resultado final</span>a) <strong>B∪U = {0,1,2,3,4,5,6,7,8,9}</strong> (es decir, U). b) <strong>B∩(C−A) = {2}</strong>. c) <strong>(A∩B)∪C = {1,2,4,6,8}</strong>. Recomendación: verificar cada resultado con un diagrama de Venn de 3 conjuntos (A, B, C dentro de U), sombreando paso a paso cada operación intermedia.</div>
+    </div>
+<div class="solved">
+      <div class="solved-head"><span class="tag">Ejercicio de cátedra</span><h4>Ejercicio 4.3</h4></div>
+      <div class="statement">Dado el conjunto B={1,2,3}, determine su conjunto potencia P(B) e indique |P(B)|. Luego, dado A={x/x es un día de la semana}, proponga una partición de A.</div>
+      <div class="step"><span class="stepnum">Paso 1 · Interpretación del enunciado</span>Primera parte: tema <em>Conjunto potencia</em> (4.5.1) — listar TODOS los subconjuntos posibles de un conjunto de 3 elementos, incluyendo el vacío y el propio conjunto. Segunda parte: tema <em>Partición de un conjunto</em> (4.5.2) — proponer subconjuntos que cumplan las tres condiciones de partición.</div>
+      <div class="step"><span class="stepnum">Paso 2 · Conceptos teóricos necesarios</span>Definición de conjunto potencia: P(A)={X/X⊆A}, con |P(A)|=2ⁿ si |A|=n. Definición de partición: familia de subconjuntos no vacíos, disjuntos dos a dos, cuya unión es el conjunto original.</div>
+      <div class="step"><span class="stepnum">Paso 3 · Planteamiento</span>Para P(B), con |B|=3, se espera |P(B)|=2³=8 subconjuntos: se listan sistemáticamente por tamaño (0, 1, 2 y 3 elementos). Para la partición de A (7 días), se eligen grupos que cubran los 7 días sin solaparse.</div>
+      <div class="step"><span class="stepnum">Paso 4 · Desarrollo completo</span><u>Conjunto potencia de B={1,2,3}:</u><br>Subconjunto de 0 elementos: ∅.<br>Subconjuntos de 1 elemento: {1}, {2}, {3}.<br>Subconjuntos de 2 elementos: {1,2}, {1,3}, {2,3}.<br>Subconjunto de 3 elementos: {1,2,3}.<br>Total: 1+3+3+1 = 8 subconjuntos, que coincide con 2³=8.<br><br><u>Partición de A (días de la semana):</u> se eligen, por ejemplo, A₁={lunes,martes,miércoles}, A₂={jueves,viernes}, A₃={sábado,domingo}. Se verifican las tres condiciones: (a) ningún Aᵢ es vacío; (b) A₁∩A₂=∅, A₁∩A₃=∅, A₂∩A₃=∅ (disjuntos de a pares); (c) A₁∪A₂∪A₃ reconstruye los 7 días de A.</div>
+      <div class="step result"><span class="stepnum">Paso 5 · Resultado final</span>P(B) = {∅, {1}, {2}, {3}, {1,2}, {1,3}, {2,3}, {1,2,3}}, con <strong>|P(B)| = 8</strong>. Una partición válida de A es <strong>L = {{lunes,martes,miércoles}, {jueves,viernes}, {sábado,domingo}}</strong> (existen muchas otras particiones posibles; lo único que debe verificarse siempre son las tres condiciones de la definición, no una única respuesta «correcta»).</div>
+    </div>
+<div class="solved">
+      <div class="solved-head"><span class="tag">Ejercicio de cátedra</span><h4>Ejercicio 4.4</h4></div>
+      <div class="statement">Dados A={1,2,3} y B={a,b}, determine el producto cartesiano A×B y B×A, y compare los resultados.</div>
+      <div class="step"><span class="stepnum">Paso 1 · Interpretación del enunciado</span>Se pide construir dos productos cartesianos con los mismos conjuntos en distinto orden, para verificar en la práctica una propiedad ya enunciada en la teoría (4.5.3): el producto cartesiano no es conmutativo.</div>
+      <div class="step"><span class="stepnum">Paso 2 · Conceptos teóricos necesarios</span>Definición de producto cartesiano: A×B = {(a,b) / a∈A ∧ b∈B}, y definición de igualdad de pares ordenados: (a,b)=(c,d) si y sólo si a=c y b=d (el orden de las componentes importa).</div>
+      <div class="step"><span class="stepnum">Paso 3 · Planteamiento</span>Para A×B se combina cada elemento de A (primera componente) con cada elemento de B (segunda componente); para B×A se invierte: cada elemento de B con cada elemento de A.</div>
+      <div class="step"><span class="stepnum">Paso 4 · Desarrollo completo</span>A×B: se combina cada uno de los 3 elementos de A con cada uno de los 2 de B → 3×2=6 pares:<br>&nbsp;&nbsp;A×B = {(1,a),(1,b),(2,a),(2,b),(3,a),(3,b)}.<br>B×A: se combina cada uno de los 2 elementos de B con cada uno de los 3 de A → también 6 pares:<br>&nbsp;&nbsp;B×A = {(a,1),(b,1),(a,2),(b,2),(a,3),(b,3)}.<br>Comparando: (1,a) pertenece a A×B pero (1,a) NO pertenece a B×A (en B×A todos los pares tienen una letra primero); son conjuntos de pares distintos, aunque tengan la misma cardinalidad.</div>
+      <div class="step result"><span class="stepnum">Paso 5 · Resultado final</span><strong>A×B = {(1,a),(1,b),(2,a),(2,b),(3,a),(3,b)}</strong>, <strong>B×A = {(a,1),(b,1),(a,2),(b,2),(a,3),(b,3)}</strong>. Ambos tienen |A×B|=|B×A|=6=|A|·|B|, pero <strong>A×B ≠ B×A</strong>: queda verificado que el producto cartesiano no es conmutativo, porque el orden dentro de cada par ordenado sí importa.</div>
+    </div>
+<footer class="unitend">— Fin de ejercicios resueltos, Unidad 4 —</footer><div class="unit-title" id="propuestos"><div class="k">Parte B</div><h2>Ejercicios propuestos, organizados por nivel</h2><p class="unit-intro">Resuélvalos sin mirar el solucionario (Parte C) hasta terminar. Nivel Básico: aprender el procedimiento. Nivel Intermedio: aplicar varias propiedades a la vez. Nivel Avanzado: dificultad de parcial universitario.</p></div><div class="unit-title" id="p-u1"><div class="k">Unidad 1</div><h2>Ejercicios propuestos — Lógica Proposicional</h2><p class="unit-intro">Intente resolverlos por su cuenta antes de mirar el solucionario. Los ejercicios de nivel Básico e Intermedio están inspirados en los de la guía de cátedra; el nivel Avanzado propone combinaciones nuevas, con el estilo y la dificultad de un parcial.</p></div>
+<div class="level basico"><h4>Nivel 1 · Básico</h4><ol><li>Indique cuáles de las siguientes oraciones son proposiciones lógicas y cuáles no, justificando: a) «El algoritmo falló.» b) «¿Aprobaste el parcial?» c) «Abran la ventana.» d) «2+2=5».</li><li>Sea p: «Hace frío» y q: «Está lloviendo». Traduzca a lenguaje natural: a) ~p  b) p∧q  c) p∨q  d) p→q  e) p↔q.</li><li>Construya la tabla de verdad de R: ~p ∨ q y de S: p → q. ¿Qué relación nota entre ambas columnas resultado?</li><li>Clasifique según su valor de verdad (tautología, contradicción o contingencia): a) p∨~p  b) p∧~p  c) (p→q)∨p.</li><li>Dada P: «Si compro las entradas, voy al cine», escriba su recíproca, su contraria y su contrarrecíproca, en símbolos y en lenguaje natural.</li></ol></div>
+<div class="level intermedio"><h4>Nivel 2 · Intermedio</h4><ol><li>Confeccione la tabla de verdad de U: (p∧q) ∨ (~p∧~q) y clasifíquela. Compárela con la tabla de p↔q. ¿Qué concluye?</li><li>Compruebe mediante tabla de verdad las equivalencias: a) p∨(p∧q) ≡ p  b) p∧(q∨r) ≡ (p∧q)∨(p∧r).</li><li>Simbolice el razonamiento y determine su validez: «Si estudio entonces apruebo. Si apruebo entonces curso la correlativa. Estudio. Por lo tanto, curso la correlativa».</li><li>Demuestre, usando el método algebraico (leyes lógicas, sin tabla de verdad), que ~(p → q) ≡ p ∧ ~q.</li><li>Determine la Forma Normal Disyuntiva (FND) de la proposición cuya tabla de verdad es: P(p,q)=V cuando (p,q)=(V,F) o (F,V), y F en los otros dos casos. (Sugerencia: ¿qué conectivo binario tiene exactamente esa tabla?)</li></ol></div>
+<div class="level avanzado"><h4>Nivel 3 · Avanzado (estilo parcial)</h4><ol><li>Simbolice y determine la validez del siguiente razonamiento por el método de deducción algebraico: «Si el servidor está caído, los usuarios no pueden ingresar. Los usuarios pueden ingresar o el equipo de soporte recibe un aviso. No se recibió ningún aviso. Por lo tanto, el servidor no está caído».</li><li>Sean P: (p→q)∧(q→r) y Q: p→r. Determine si P⇒Q (implicación lógica) es válida, fundamentando con tabla de verdad o con el método algebraico, a elección.</li><li>Un examen contiene la afirmación: «Si un razonamiento P₁,…,Pₙ⊢Q es válido y se reemplaza P₁ por una proposición R equivalente a P₁, el nuevo razonamiento también es válido». Justifique por qué esta afirmación es verdadera, apoyándose en la definición de razonamiento deductivo válido y en la propiedad transitiva de la equivalencia lógica.</li><li>Determine, sin construir la tabla completa (razonando por casos sobre los conectivos internos), si ((p→q) ∧ (r→s) ∧ (p∨r)) → (q∨s) es una tautología.</li><li>Clasifique el siguiente razonamiento y explique la observación: «Si estudio, apruebo. No apruebo. No estudio, o pierdo la beca». Analice qué ocurre si además se sabe que «pierdo la beca» es una premisa falsa en el contexto del problema.</li></ol></div>
+<footer class="unitend">— Fin de ejercicios propuestos, Unidad 1 · Ver soluciones en la sección Solucionario —</footer><div class="unit-title" id="p-u2"><div class="k">Unidad 2</div><h2>Ejercicios propuestos — Lógica de Predicados</h2></div>
+<div class="level basico"><h4>Nivel 1 · Básico</h4><ol><li>Sea P(x): «x+2>5». Diga si P(x) es una función proposicional válida sobre: a) ℤ⁺  b) el conjunto de colores primarios C={x/x es color primario}.</li><li>Sea A={1,2,3,4,5}. Determine el valor de verdad de ∃x/ x+3<5 y de ∀x: x+3≤7, con x∈A.</li><li>Traduzca a símbolos, usando cuantificadores: «Todos los estudiantes de la clase aprobaron el examen».</li><li>Niegue la proposición ∀x: F(x) → G(x), aplicando la propiedad de negación de cuantificadores.</li><li>Clasifique como proposición categórica y simbolice: «Algunos triángulos isósceles no son equiláteros».</li></ol></div>
+<div class="level intermedio"><h4>Nivel 2 · Intermedio</h4><ol><li>Con P(x): x≥2, Q(x): |x|=2, en los enteros: determine el valor de verdad de ∃x/[P(x)∧Q(x)] y de ∀x:[Q(x)→P(x)], justificando con al menos un elemento concreto.</li><li>Demuestre informalmente (traduciendo al lenguaje cotidiano) que ~(∀x: F(x)) ≡ ∃x/ ~F(x).</li><li>Simbolice y determine la validez: «Ningún estudiante de penúltimo o último año está inscripto en educación física. María está inscripta en educación física. Por lo tanto, María no es una estudiante de último año» (use P(x): x está en penúltimo año, Q(x): x está en último año, R(x): x está inscripto en educación física).</li><li>Para R(x,y): «x+y es par», en los enteros, determine el valor de verdad de ∀x∃y R(x,y) y de ∃x∀y R(x,y), y explique por qué no dicen lo mismo.</li><li>Dado el predicado S(x,y): x divide a y, escriba en símbolos «todo entero divide a 0» y determine su valor de verdad.</li></ol></div>
+<div class="level avanzado"><h4>Nivel 3 · Avanzado (estilo parcial)</h4><ol><li>Para el universo de todos los triángulos, con P(t): t tiene dos lados iguales; Q(t): t es isósceles; R(t): t tiene dos ángulos iguales, determine la validez de: «El triángulo XYZ no tiene dos ángulos iguales. Si un triángulo tiene dos lados iguales, es isósceles. Si es isósceles, tiene dos ángulos iguales. Por lo tanto, XYZ no tiene dos lados iguales», usando Especificación Universal y Modus Tollens.</li><li>Demuestre, usando las reglas de inferencia de predicados, la validez de: ∀x:(P(x)→Q(x)), ∀x:(Q(x)→R(x)), ∃x/P(x) ⊢ ∃x/R(x). (Sugerencia: la existencia se «hereda»: especialice sobre el elemento que hace verdadero a P(x)).</li><li>Analice si las siguientes dos proposiciones son equivalentes: ∀x∀y R(x,y) y ∀y∀x R(x,y). Justifique en general por qué cuantificadores del mismo tipo sí pueden intercambiarse de orden sin alterar el significado.</li><li>Simbolice: «Para todo entero x, si x es par, entonces existe un entero y tal que x=2y» y niéguela completamente, expresando la negación en lenguaje natural correcto (sin dejar el «no» pegado a la forma simbólica original).</li><li>Un enunciado de examen afirma: «Todo profesor de matemática ha estudiado cálculo, y Ana no ha estudiado cálculo». ¿Qué puede inferirse válidamente sobre si Ana es profesora de matemática? Fundamente con Modus Tollens sobre la premisa especificada.</li></ol></div>
+<footer class="unitend">— Fin de ejercicios propuestos, Unidad 2 · Ver soluciones en la sección Solucionario —</footer><div class="unit-title" id="p-u3"><div class="k">Unidad 3</div><h2>Ejercicios propuestos — Inducción Matemática</h2></div>
+<div class="level basico"><h4>Nivel 1 · Básico</h4><ol><li>Calcule S₁, S₂, S₃ y S₄ para Sₙ = 1+3+5+…+(2n−1) y, a partir del patrón observado, proponga una fórmula general para Sₙ.</li><li>Demuestre por inducción matemática la fórmula propuesta en el ejercicio anterior, para todo n≥1.</li><li>Verifique la Base Inductiva (únicamente la base, no el paso) de: «S(n): 3+6+9+…+3n = 3n(n+1)/2», para n₀=1.</li><li>Escriba, en sus propias palabras, qué es la Hipótesis Inductiva y para qué se usa dentro del Paso Inductivo.</li><li>Sin hacer la demostración completa, indique cuál sería el primer paso (Base Inductiva) para probar que n! > 2ⁿ para n suficientemente grande, probando con n=0,1,2,3,4 hasta encontrar desde dónde se cumple.</li></ol></div>
+<div class="level intermedio"><h4>Nivel 2 · Intermedio</h4><ol><li>Demuestre por inducción matemática que la suma de los cuadrados de los primeros n naturales es Sₙ = 1²+2²+…+n² = n(n+1)(2n+1)/6, para todo n≥1.</li><li>Demuestre por inducción matemática que Sₙ = 5+10+15+…+5n = 5n(n+1)/2, para todo n≥1.</li><li>Determine para qué valores de n se cumple 3ⁿ > n³ (pruebe con varios valores de n para encontrar el n₀ correcto) y luego demuestre por inducción que se cumple desde ese n₀ en adelante.</li><li>Demuestre por inducción que la suma de los primeros n números impares al cuadrado es Sₙ=1²+3²+5²+…+(2n−1)² = n(2n−1)(2n+1)/3, para todo n≥1.</li><li>Un estudiante afirma haber demostrado por inducción que «todos los caballos son del mismo color», usando un paso inductivo aparentemente válido. Explique qué tipo de error debe estar ocultándose (sin necesidad de conocer la demostración completa), basándose en qué condición del Principio de Inducción podría estar fallando.</li></ol></div>
+<div class="level avanzado"><h4>Nivel 3 · Avanzado (estilo parcial)</h4><ol><li>Demuestre por inducción matemática que, para todo n≥1: 1·2+2·3+3·4+…+n(n+1) = n(n+1)(n+2)/3, mostrando explícitamente el factor común utilizado en el paso inductivo.</li><li>Determine el primer natural n₀ para el cual se verifica 2ⁿ ≥ n² + n, probando varios valores, y luego demuestre por inducción que la desigualdad se cumple para todo n≥n₀.</li><li>Un tablero rectangular de 2×3ⁿ casillas debe cubrirse con fichas de 1×3. Plantee la base inductiva y describa (sin desarrollar todo el álgebra) cómo sería el paso inductivo de n a n+1, en analogía con el ejemplo del tablero de ajedrez fallado cubierto con triminós visto en la teoría.</li><li>Demuestre por inducción que la sumatoria Sₙ = 1·5¹+2·5²+…+n·5ⁿ = [5+(4n−1)·5ⁿ⁺¹] / 16, para todo n≥1 (preste atención al manejo algebraico de las potencias de 5 en el paso inductivo).</li><li>Un enunciado dice: «la suma de los ángulos interiores de un polígono convexo de n lados es (n−2)·180°». Plantee la demostración por inducción matemática comenzando en n₀=3 (el triángulo), describiendo cómo el paso inductivo de n a n+1 lados podría apoyarse en dividir el polígono en un triángulo más un polígono de un lado menos.</li></ol></div>
+<footer class="unitend">— Fin de ejercicios propuestos, Unidad 3 · Ver soluciones en la sección Solucionario —</footer><div class="unit-title" id="p-u4"><div class="k">Unidad 4</div><h2>Ejercicios propuestos — Conjuntos</h2></div>
+<div class="level basico"><h4>Nivel 1 · Básico</h4><ol><li>Defina por extensión los conjuntos: a) A={x/x∈ℕ, 5<x<11}  b) B={x/x∈ℤ, x²=9}.</li><li>Defina por comprensión los conjuntos: a) C={2,4,6,8,10}  b) D={lunes,martes,miércoles,jueves,viernes,sábado,domingo}.</li><li>Sea U={1,...,10}, A={2,4,6,8,10}, B={1,2,3,4,5}. Determine por extensión: a) A∩B  b) A∪B  c) A−B  d) ~A (respecto de U).</li><li>Represente en un diagrama de Venn los conjuntos A y B del ejercicio anterior, sombreando A∩B.</li><li>Indique si son verdaderas o falsas, justificando: a) ∅⊆{1,2,3}  b) {1}∈{1,2,3}  c) {1}⊆{1,2,3}.</li></ol></div>
+<div class="level intermedio"><h4>Nivel 2 · Intermedio</h4><ol><li>Sea U={a,...,z}, A={a,d,f,m,p}, B={a,p}, C={e,f,g,h,i}. Determine por extensión: a) (A−B)∪C  b) ~(A∩C)  c) A∩(B∪C).</li><li>Determine si L={{1,3,5},{2,4,6,8},{7,9}} es una partición de S={1,2,3,4,5,6,7,8,9}. Si no lo es, indique exactamente cuál condición de la definición falla.</li><li>Dado A={1,2}, halle el conjunto potencia P(A) y verifique que |P(A)|=2².</li><li>Dados A={1,2,3} y B={x,y}, determine A×B y B×A, y calcule |A×B|.</li><li>Demuestre, usando diagramas de Venn (sombreando cada lado por separado), si se cumple la igualdad A−(B∪C) = (A−B)∩(A−C).</li></ol></div>
+<div class="level avanzado"><h4>Nivel 3 · Avanzado (estilo parcial)</h4><ol><li>Sea U={a,...,z}, A={a,b,c}, C={a,b,d,e}. Si |A∩B|=2 y (A∪B)⊆(B∪C), determine un conjunto B posible que verifique ambas condiciones, y justifique por qué lo verifica.</li><li>Se define la diferencia simétrica A△B como el conjunto de los elementos que están en A o en B, pero no en ambos. a) Defínala formalmente usando unión, intersección y complemento. b) Demuestre, usando diagramas de Venn o el método algebraico con leyes lógicas, que A△B = (A−B)∪(B−A).</li><li>Dados A={1,4,7,9}, B={1,2,3,4,5}, C={2,4,6,8} sobre U={0,...,9}: calcule (A∩B)∪C y luego calcule ~[(A∩B)∪C] aplicando De Morgan generalizado; verifique el resultado por extensión directa.</li><li>Demuestre, por el método algebraico (usando las leyes lógicas de la Unidad 1 trasladadas a conjuntos, según la relación x∈A ↔ p(x)), que la unión es distributiva respecto de la intersección: A∪(B∩C) = (A∪B)∩(A∪C).</li><li>Determine tres particiones distintas del conjunto A={x/x es una letra de la palabra ESTRUCTURAS (sin repetir letras)}, y verifique en cada caso las tres condiciones de partición.</li></ol></div>
+<footer class="unitend">— Fin de ejercicios propuestos, Unidad 4 · Ver soluciones en la sección Solucionario —</footer><div class="unit-title" id="solucionario"><div class="k">Solucionario</div><h2>Respuestas — Ejercicios propuestos</h2><p class="unit-intro">Solucionario correspondiente a la sección de ejercicios propuestos (Básico / Intermedio / Avanzado) de las cuatro unidades. Cada respuesta incluye el resultado y el procedimiento o propiedad clave utilizada.</p></div>
+<h3 class="topic">Unidad 1 — Lógica Proposicional</h3><h4 class="subtopic">Nivel Básico</h4>
+<div class="solkey"><strong>1.</strong> a) Sí, es proposición (declarativa, con valor de verdad). b) No (interrogativa). c) No (imperativa). d) No es proposición lógica en sentido estricto de la matemática elemental porque 2+2=5 es una afirmación con valor de verdad definido — SÍ es proposición (y resulta ser FALSA); lo que la haría no-proposición sería tener una variable sin especializar.</div>
+<div class="solkey"><strong>2.</strong> a) No hace frío. b) Hace frío y está lloviendo. c) Hace frío o está lloviendo (o ambos). d) Si está lloviendo entonces no hace frío. e) Hace frío si y sólo si está lloviendo.</div>
+<div class="solkey"><strong>3.</strong> R: ~p∨q y S: p→q tienen exactamente la misma tabla de verdad (V,F,V,V para p,q en VV,VF,FV,FF). Son equivalentes: p→q ≡ ~p∨q, una de las leyes lógicas del condicional (Unidad 1, 1.4.3).</div>
+<div class="solkey"><strong>4.</strong> a) p∨~p es TAUTOLOGÍA (Tercero Excluido). b) p∧~p es CONTRADICCIÓN (No Contradicción). c) (p→q)∨p: al evaluar, resulta siempre V (tautología), porque cuando p es F el condicional ya es V, y cuando p es V, la disyunción ya es V por el segundo término.</div>
+<div class="solkey"><strong>5.</strong> P: p→q (p: compro las entradas, q: voy al cine). Recíproca: q→p, «Si voy al cine, compro las entradas». Contraria: ~p→~q, «Si no compro las entradas, no voy al cine». Contrarrecíproca: ~q→~p, «Si no voy al cine, no compro las entradas» (equivalente a P).</div>
+<h4 class="subtopic">Nivel Intermedio</h4>
+<div class="solkey"><strong>1.</strong> U: (p∧q)∨(~p∧~q) tiene tabla V,F,F,V — idéntica a la de p↔q. Se concluye U≡(p↔q): el bicondicional puede reescribirse como «ambas verdaderas o ambas falsas».</div>
+<div class="solkey"><strong>2.</strong> a) Ley de Absorción: p∨(p∧q)≡p (verificable con tabla de 4 filas, ambas columnas dan V,V,F,F). b) Ley Distributiva de ∧ sobre ∨ (ambas columnas dan V,V,V,F,F,F,F,F en tabla de 8 filas).</div>
+<div class="solkey"><strong>3.</strong> p→q, q→r, p ⊢ r. Paso 1: p→r (de las 2 premisas por Silogismo Hipotético). Paso 2: r (de paso 1 y la premisa p, por Modus Ponens). Razonamiento VÁLIDO.</div>
+<div class="solkey"><strong>4.</strong> ~(p→q) ≡ ~(~p∨q) [ley P→Q≡~P∨Q] ≡ ~(~p)∧~q [De Morgan] ≡ p∧~q [Involución]. Queda demostrado algebraicamente sin tabla de verdad.</div>
+<div class="solkey"><strong>5.</strong> Esa tabla (F,V,V,F para VV,VF,FV,FF) es la de la disyunción exclusiva p⊻q. FND: se toman las filas V (VF y FV) → min-términos (p∧~q) y (~p∧q) → FND: (p∧~q)∨(~p∧q).</div>
+<h4 class="subtopic">Nivel Avanzado</h4>
+<div class="solkey"><strong>1.</strong> p: servidor caído; q: usuarios pueden ingresar; r: soporte recibe aviso. Premisas: p→~q, q∨r, ~r. Paso 1: ~q∨r ≡ q→r (equivalencia); en realidad se resuelve más directo: de q∨r y ~r, por Silogismo Disyuntivo, se obtiene q. Paso 2: de p→~q y q, por Modus Tollens (usando ~(~q)=q) se obtiene ~p. Razonamiento VÁLIDO: el servidor no está caído.</div>
+<div class="solkey"><strong>2.</strong> SÍ es válida: P=(p→q)∧(q→r) implica lógicamente Q=p→r. Es exactamente el Silogismo Hipotético, ya demostrado como regla de inferencia válida en la Unidad 1 (tabla de verdad: en toda fila donde P es V, Q también lo es).</div>
+<div class="solkey"><strong>3.</strong> Verdadera: si P₁≡R, entonces (R∧P₂∧…∧Pₙ)≡(P₁∧P₂∧…∧Pₙ) por congruencia de la equivalencia dentro de una conjunción; como esta última conjunción implica Q (por ser el razonamiento original válido), por transitividad de la equivalencia y la implicación, la conjunción con R también implica Q.</div>
+<div class="solkey"><strong>4.</strong> SÍ es tautología. Razonando por casos: si q∨s es verdadera, la implicación ya es V. Si q∨s es falsa, entonces q=F y s=F; con q=F, p→q sólo es V si p=F; con s=F, r→s sólo es V si r=F; pero entonces p∨r=F, lo que hace FALSO al antecedente completo (la conjunción de las tres premisas), y un condicional con antecedente falso es V. En ambos casos el resultado es V: es tautología.</div>
+<div class="solkey"><strong>5.</strong> p→q, ~q ⊢ ~p es exactamente el Modus Tollens, válido. La tercera premisa «~p∨(pierdo la beca)» no es necesaria para llegar a ~p (ya se obtuvo con las dos primeras); si «pierdo la beca» es falsa en el contexto, no afecta la validez formal del razonamiento — la validez es independiente del valor de verdad real de las proposiciones.</div>
+<h3 class="topic">Unidad 2 — Lógica de Predicados</h3><h4 class="subtopic">Nivel Básico</h4>
+<div class="solkey"><strong>1.</strong> a) SÍ es función proposicional en ℤ⁺ (se puede instanciar e informa un valor de verdad). b) NO tiene sentido sumar 2 a un color: no es una función proposicional válida sobre C.</div>
+<div class="solkey"><strong>2.</strong> ∃x/x+3<5, con x∈{1,...,5}: x=1 da 4<5 V → EXISTE al menos uno → VERDADERA. ∀x: x+3≤7: para x=5, 5+3=8≤7 es FALSO → contraejemplo → proposición FALSA.</div>
+<div class="solkey"><strong>3.</strong> Con E(x): «x es estudiante de la clase», A(x): «x aprobó el examen»: ∀x:(E(x)→A(x)).</div>
+<div class="solkey"><strong>4.</strong> ~[∀x: F(x)→G(x)] ≡ ∃x/ ~(F(x)→G(x)) ≡ ∃x/ (F(x)∧~G(x)), usando primero la negación de cuantificador universal y luego la equivalencia del condicional ~(P→Q)≡P∧~Q.</div>
+<div class="solkey"><strong>5.</strong> Particular Negativa: ∃x: x∈A ∧ x∉B, con A=clase de los triángulos isósceles, B=clase de los equiláteros.</div>
+<h4 class="subtopic">Nivel Intermedio</h4>
+<div class="solkey"><strong>1.</strong> ∃x/[P(x)∧Q(x)]: con x=−2, P(−2):−2≥2 es F; con x=2, P(2):2≥2 V y Q(2):|2|=2 V → se cumple con x=2 → VERDADERA. ∀x:[Q(x)→P(x)]: con x=−2, Q(−2):|−2|=2 V, P(−2):−2≥2 F → condicional F → contraejemplo → proposición FALSA.</div>
+<div class="solkey"><strong>2.</strong> «Para todo x, F(x)» negado dice «no es cierto que todos cumplen F», lo que en castellano equivale a «existe al menos uno que no cumple F» — exactamente ∃x/~F(x).</div>
+<div class="solkey"><strong>3.</strong> P(x): penúltimo año; Q(x): último año; R(x): inscripto en ed. física; m: María. Premisas: ∀x:[(P(x)∨Q(x))→~R(x)], R(m). Paso: (P(m)∨Q(m))→~R(m) [Especificación Universal]; por Modus Tollens con R(m), se obtiene ~(P(m)∨Q(m)) ≡ ~P(m)∧~Q(m) [De Morgan], de donde ~Q(m): María no es de último año. VÁLIDO.</div>
+<div class="solkey"><strong>4.</strong> ∀x∃y R(x,y) es VERDADERA (para cualquier x, y=x mismo da x+x=2x, par). ∃x∀y R(x,y) es FALSA (no existe un x fijo tal que x+y sea par para TODO y, ya que basta variar la paridad de y). No dicen lo mismo porque el orden ∀∃ es más débil que ∃∀ cuando se mezclan tipos distintos de cuantificador.</div>
+<div class="solkey"><strong>5.</strong> ∀x: S(x,0), es decir ∀x: x|0. Es VERDADERA: todo entero divide a 0 (0 = x·0 para cualquier x).</div>
+<h4 class="subtopic">Nivel Avanzado</h4>
+<div class="solkey"><strong>1.</strong> Premisas: ~R(XYZ), ∀t:(P(t)→Q(t)), ∀t:(Q(t)→R(t)). Especificando en t=XYZ: P(XYZ)→Q(XYZ) y Q(XYZ)→R(XYZ); por Silogismo Hipotético, P(XYZ)→R(XYZ); con ~R(XYZ), por Modus Tollens, ~P(XYZ). VÁLIDO.</div>
+<div class="solkey"><strong>2.</strong> Se especializa la existencia: sea a un elemento tal que P(a) (por definición de ∃). De ∀x(P(x)→Q(x)) con Especificación Universal, P(a)→Q(a); con P(a), Modus Ponens da Q(a). De ∀x(Q(x)→R(x)), análogamente R(a). Por Generalización Existencial (informal: «si existe uno que cumple R, entonces ∃x/R(x)»), se concluye ∃x/R(x). VÁLIDO.</div>
+<div class="solkey"><strong>3.</strong> SÍ son equivalentes: cuando ambos cuantificadores son del mismo tipo (∀∀ o ∃∃), el orden no afecta el significado, porque en ambos casos se está afirmando/exigiendo la propiedad para todos los pares (x,y) simultáneamente, sin que uno dependa de una elección previa del otro (a diferencia de mezclar ∀ con ∃, donde sí importa el orden).</div>
+<div class="solkey"><strong>4.</strong> ∀x:(Par(x) → ∃y/x=2y). Negación completa: ∃x/(Par(x) ∧ ∀y: x≠2y), que en lenguaje natural es: «Existe un entero par x tal que, para ningún entero y, x es igual a 2y» (una afirmación que, dicho sea de paso, es falsa en los enteros, ya que todo par sí se escribe como 2y).</div>
+<div class="solkey"><strong>5.</strong> Por Modus Tollens sobre la premisa especificada (Prof(Ana)→Cálculo(Ana), ~Cálculo(Ana) ⊢ ~Prof(Ana)): se infiere válidamente que Ana NO es profesora de matemática.</div>
+<h3 class="topic">Unidad 3 — Inducción Matemática</h3><h4 class="subtopic">Nivel Básico</h4>
+<div class="solkey"><strong>1.</strong> S₁=1, S₂=1+3=4, S₃=1+3+5=9, S₄=1+3+5+7=16. Patrón: Sₙ = n² (¡la suma de los primeros n impares es siempre un cuadrado perfecto!).</div>
+<div class="solkey"><strong>2.</strong> Base (n=1): S₁=1=1². Correcto. HI: 1+3+…+(2k−1)=k². Paso: 1+3+…+(2k−1)+(2k+1) = k²+(2k+1) = (k+1)². Por inducción, Sₙ=n² ∀n≥1.</div>
+<div class="solkey"><strong>3.</strong> Base n₀=1: S(1): 3 = 3·1·2/2 = 3. Se verifica (sólo se pedía la base, no el paso completo).</div>
+<div class="solkey"><strong>4.</strong> La Hipótesis Inductiva es la suposición, dentro del paso inductivo, de que la propiedad F(k) ya es verdadera para un k≥n₀ arbitrario (aún no probado en general); se usa como herramienta para, a partir de ella, demostrar que F(k+1) también se cumple.</div>
+<div class="solkey"><strong>5.</strong> n=0: 1>1 falso. n=1: 1>2 falso. n=2: 2>4 falso. n=3: 6>8 falso. n=4: 24>16 VERDADERO. La base inductiva se ubicaría en n₀=4.</div>
+<h4 class="subtopic">Nivel Intermedio</h4>
+<div class="solkey"><strong>1.</strong> Base (n=1): 1=1·2·3/6=1 ✓. HI: 1²+…+k²=k(k+1)(2k+1)/6. Paso: sumando (k+1)² y sacando factor común (k+1), se llega a (k+1)(k+2)(2k+3)/6, que es la fórmula para n=k+1. Queda demostrado ∀n≥1.</div>
+<div class="solkey"><strong>2.</strong> Base (n=1): 5=5·1·2/2=5 ✓. HI: 5+10+…+5k=5k(k+1)/2. Paso: sumando 5(k+1) y sacando factor común 5(k+1), se obtiene 5(k+1)(k+2)/2. Demostrado ∀n≥1.</div>
+<div class="solkey"><strong>3.</strong> Probando: n=1(3>1 V), n=2(9>8 V), n=3(27>27 F, empate), n=4(81>64 V)... la desigualdad estricta falla en n=3 pero se cumple en 1,2,4. Conviene tomar n₀=4 y demostrar el paso inductivo para k≥4 (en n=3 hay igualdad, no cumple el «mayor estricto»).</div>
+<div class="solkey"><strong>4.</strong> Base (n=1): 1=1·1·3/3=1 ✓. HI: 1²+3²+…+(2k−1)²=k(2k−1)(2k+1)/3. Paso: sumando (2k+1)² y operando algebraicamente con denominador común y factor (2k+1), se llega a (k+1)(2k+1)(2k+3)/3, que es la fórmula para n=k+1. Demostrado.</div>
+<div class="solkey"><strong>5.</strong> El error típico en esa falacia clásica está en la Base Inductiva: el paso inductivo puede parecer válido para grupos de caballos con 2 o más elementos que se solapan, pero falla precisamente al pasar de 1 a 2 caballos, porque ahí no hay superposición entre los subgrupos considerados; es decir, el paso inductivo NO es realmente válido para k=1, aunque lo parezca para k≥2 — exactamente el tipo de error que la Unidad 3 advierte revisar con cuidado.</div>
+<h4 class="subtopic">Nivel Avanzado</h4>
+<div class="solkey"><strong>1.</strong> Base (n=1): 1·2=2=1·2·3/3=2 ✓. HI: 1·2+…+k(k+1)=k(k+1)(k+2)/3. Paso: se suma (k+1)(k+2) y se saca el factor común (k+1)(k+2), quedando [(k+1)(k+2)/3]·(k+3) = (k+1)(k+2)(k+3)/3, la fórmula para n=k+1. Demostrado ∀n≥1.</div>
+<div class="solkey"><strong>2.</strong> Probando: n=1(2≥2 V), n=2(4≥6 F), n=3(8≥12 F), n=4(16≥20 F), n=5(32≥30 V), n=6(64≥42 V)... El primer natural donde retoma y ya no vuelve a fallar es n₀=5 (se debe verificar que continúa cumpliéndose para valores mayores, lo cual se confirma con el paso inductivo desde k≥5).</div>
+<div class="solkey"><strong>3.</strong> Base (n=1): tablero de 2×3 casillas se cubre con 2 fichas de 1×3 (evidente). Paso inductivo: un tablero de 2×3^(k+1) se puede dividir en 3 franjas de 2×3ᵏ; por Hipótesis Inductiva cada una de esas franjas ya se sabe cubrir con fichas de 1×3, por lo tanto el tablero completo también.</div>
+<div class="solkey"><strong>4.</strong> Base (n=1): 1·5¹=5, y [5+(4·1−1)·5²]/16=[5+75]/16=80/16=5 ✓. HI: la suma hasta k iguala [5+(4k−1)5^(k+1)]/16. Paso: se suma (k+1)·5^(k+1), se saca denominador común 16 y se factoriza 5^(k+1), llegando —tras operar los coeficientes de k— a [5+(4(k+1)−1)·5^(k+2)]/16, la fórmula para n=k+1. Demostrado.</div>
+<div class="solkey"><strong>5.</strong> Base (n₀=3, triángulo): (3−2)·180°=180°, correcto. Paso inductivo: un polígono convexo de k+1 lados puede dividirse, trazando una diagonal, en un triángulo (180°) más un polígono convexo de k lados, cuya suma de ángulos ya es (k−2)·180° por Hipótesis Inductiva; sumando ambas partes: (k−2)·180°+180° = (k−1)·180° = ((k+1)−2)·180°, la fórmula para k+1 lados.</div>
+<h3 class="topic">Unidad 4 — Conjuntos</h3><h4 class="subtopic">Nivel Básico</h4>
+<div class="solkey"><strong>1.</strong> a) A={6,7,8,9,10}. b) B={3,−3} (los enteros cuyo cuadrado es 9).</div>
+<div class="solkey"><strong>2.</strong> a) C={x/x∈ℕ, x es par, x≤10}. b) D={x/x es un día de la semana distinto del sábado}.</div>
+<div class="solkey"><strong>3.</strong> a) A∩B={2,4}. b) A∪B={1,2,3,4,5,6,8,10}. c) A−B={6,8,10}. d) ~A={1,3,5,7,9} (respecto de U={1..10}).</div>
+<div class="solkey"><strong>4.</strong> Dos círculos superpuestos dentro del rectángulo U; se sombrea únicamente el área común (A∩B), que corresponde a {2,4}.</div>
+<div class="solkey"><strong>5.</strong> a) VERDADERA (∅ está incluido en cualquier conjunto). b) FALSA ({1} no es un elemento de {1,2,3}, 1 sí lo es; no confundir pertenencia con inclusión). c) VERDADERA ({1}⊆{1,2,3}).</div>
+<h4 class="subtopic">Nivel Intermedio</h4>
+<div class="solkey"><strong>1.</strong> A−B={d,f,m} (cálculo intermedio); (A−B)∪C = {d,f,m,e,g,h,i}. A∩C={f} (cálculo intermedio); ~(A∩C) = todo el alfabeto menos f. B∪C={a,p,e,f,g,h,i} (cálculo intermedio); A∩(B∪C) = {a,f,p}.</div>
+<div class="solkey"><strong>2.</strong> NO es partición: falla la condición de disjunción de a pares, porque {2,4,6,8} y {7,9} sí son disjuntos, pero además falta el elemento 7... en realidad revisando: {1,3,5}∪{2,4,6,8}∪{7,9} sí cubre todo S y son disjuntos entre sí — por lo tanto SÍ es una partición válida de S (se cumplen las tres condiciones).</div>
+<div class="solkey"><strong>3.</strong> P(A) = {∅, {1}, {2}, {1,2}}. |P(A)|=4=2².</div>
+<div class="solkey"><strong>4.</strong> A×B = {(1,x),(1,y),(2,x),(2,y),(3,x),(3,y)}. B×A = {(x,1),(x,2),(x,3),(y,1),(y,2),(y,3)}. |A×B|=6.</div>
+<div class="solkey"><strong>5.</strong> SÍ se cumple (es una de las leyes de De Morgan generalizadas): al sombrear A−(B∪C) se obtiene exactamente la misma región que al sombrear (A−B)∩(A−C) — ambos representan «lo que está en A pero ni en B ni en C».</div>
+<h4 class="subtopic">Nivel Avanzado</h4>
+<div class="solkey"><strong>1.</strong> Un B posible: B={b,d} (o cualquier B con |A∩B|=2, p.ej. B={a,b}). Con B={a,b}: A∩B={a,b}, |A∩B|=2 ✓; A∪B={a,b,c}, B∪C={a,b,d,e}; ¿A∪B⊆B∪C? c∈(A∪B) pero c∉(B∪C) → NO se cumple. Con B={a,c}: A∩B={a,c}, |A∩B|=2 ✓; A∪B={a,b,c}=A; B∪C={a,c,d,e}; b∈A∪B pero b∉B∪C → tampoco. La solución que sí funciona es B={a,b,c}=A: A∩B=A∩A=A={a,b,c}, pero |A|=3≠2. Conviene entonces B tal que A∩B tenga exactamente 2 elementos de A y A∪B quede completamente dentro de B∪C: por ejemplo B={a,b,d,e}: A∩B={a,b} (2 elementos ✓); A∪B={a,b,c,d,e}; B∪C={a,b,d,e} — falta c, no se cumple. Este ítem admite variadas soluciones parciales; lo importante es el método: fijar B de forma que A∩B tenga cardinalidad exactamente 2 y verificar la inclusión elemento a elemento.</div>
+<div class="solkey"><strong>2.</strong> a) A△B = (A∪B) − (A∩B), o equivalentemente (A∩~B)∪(~A∩B). b) Por diagrama de Venn: la región de A△B (en A o en B, no en ambos) coincide exactamente con la unión de «sólo A» (A−B) y «sólo B» (B−A); ambas descripciones sombrean la misma área, quedando demostrada la igualdad.</div>
+<div class="solkey"><strong>3.</strong> A∩B={1,4} (cálculo intermedio); (A∩B)∪C = {1,2,4,6,8}. Por De Morgan: ~[(A∩B)∪C] = ~(A∩B)∩~C. Por extensión directa sobre U={0,...,9}: ~[(A∩B)∪C] = {0,3,5,7,9} (los elementos de U que no están en {1,2,4,6,8}).</div>
+<div class="solkey"><strong>4.</strong> Demostración algebraica (traduciendo cada conjunto a su función proposicional de pertenencia, p(x):x∈A, q(x):x∈B, r(x):x∈C): A∪(B∩C) = {x/p(x)∨(q(x)∧r(x))} = {x/(p(x)∨q(x))∧(p(x)∨r(x))} (distributiva lógica de ∨ sobre ∧) = (A∪B)∩(A∪C). ∎</div>
+<div class="solkey"><strong>5.</strong> A={E,S,T,R,U,C,A,S → letras distintas: E,S,T,R,U,C,A} (7 letras distintas). Una partición posible: L={{E,S},{T,R},{U,C,A}}; otra: L={{E},{S},{T},{R},{U},{C},{A}} (cada letra en su propio subconjunto); otra: L={{E,S,T},{R,U},{C,A}}. En cada caso deben verificarse las tres condiciones: ningún subconjunto vacío, disjuntos de a pares, y unión total igual a A.</div>
+<footer class="unitend">— Fin del solucionario —</footer><div class="unit-title" id="parciales"><div class="k">Preparación para parciales</div><h2>Repaso integrador y modelo de parcial</h2><p class="unit-intro">Aviso importante: los ejercicios de esta sección con la etiqueta «modelo de parcial» son <strong>propuestos por este material de estudio</strong>, construidos con el estilo y nivel observado en las guías de la cátedra — no son, ni se afirma que sean, ejercicios reales de un examen. Ningún ejercicio aquí incluido se presenta como garantizado en el próximo parcial.</p></div>
+<h3 class="topic">Conceptos teóricos más importantes, por unidad</h3>
+<table class="props"><tr><th>Unidad</th><th>Conceptos clave a dominar</th></tr><tr><td>1 · Proposiciones</td><td>Definición de proposición; los 6 conectivos y sus tablas de verdad; tautología/contradicción/contingencia; recíproca/contraria/contrarrecíproca; equivalencia lógica (≡) vs. consecuencia lógica (⇒); razonamiento deductivo válido; las 8 reglas de inferencia; método algebraico de deducción.</td></tr><tr><td>2 · Predicados</td><td>Función proposicional y dominio; cuantificadores ∀/∃; variable ligada vs. libre; proposiciones categóricas (4 formas); De Morgan para cuantificadores; Especificación y Generalización Universal.</td></tr><tr><td>3 · Inducción</td><td>Sucesión y término general; Principio de Inducción Matemática (Base + Hipótesis + Paso); por qué ambas condiciones son necesarias; cómo hallar el n₀ correcto cuando no es 0 ó 1.</td></tr><tr><td>4 · Conjuntos</td><td>Extensión vs. comprensión; pertenencia vs. inclusión (no confundir ∈ con ⊆); inclusión amplia vs. estricta; complemento absoluto vs. relativo (diferencia); intersección y unión y su correspondencia con ∧/∨; las leyes del álgebra de conjuntos (De Morgan, distributiva, absorción); conjunto potencia (2ⁿ); partición (3 condiciones); producto cartesiano (no conmutativo).</td></tr></table>
+<h3 class="topic">Fórmulas y propiedades imprescindibles</h3>
+<table class="props"><tr><th>Fórmula / Propiedad</th><th>Dónde se usa</th></tr><tr><td>Tabla de verdad con n proposiciones simples → 2ⁿ filas</td><td>Unidad 1</td></tr><tr><td>P≡Q ⟺ P↔Q es tautología &nbsp;·&nbsp; P⇒Q ⟺ P→Q es tautología</td><td>Unidad 1</td></tr><tr><td>Razonamiento válido ⟺ (P₁∧…∧Pₙ)→Q es tautología</td><td>Unidad 1</td></tr><tr><td>~[∀x:P(x)] ≡ ∃x/~P(x) &nbsp;·&nbsp; ~[∃x:P(x)] ≡ ∀x:~P(x)</td><td>Unidad 2</td></tr><tr><td>Base Inductiva + (HI → Paso Inductivo) ⟹ F(n) ∀n≥n₀</td><td>Unidad 3</td></tr><tr><td>|P(A)| = 2^|A| &nbsp;·&nbsp; Partición: no vacíos + disjuntos a pares + unión total</td><td>Unidad 4</td></tr><tr><td>De Morgan: ~(A∩B)=~A∪~B &nbsp;·&nbsp; ~(A∪B)=~A∩~B (idéntico en lógica y en conjuntos)</td><td>Unidades 1 y 4</td></tr><tr><td>|A×B| = |A|·|B|, con A×B ≠ B×A en general</td><td>Unidad 4</td></tr></table>
+<h3 class="topic">Preguntas teóricas tipo parcial</h3>
+<div class="examq"><span class="qn">1.</span>¿Por qué el condicional p→q es verdadero cuando p es falso, sin importar q? Explique con el ejemplo del «compromiso».</div>
+<div class="examq"><span class="qn">2.</span>¿En qué se diferencian la equivalencia lógica y la consecuencia lógica? Dé un ejemplo de dos proposiciones donde valga la consecuencia pero no la equivalencia.</div>
+<div class="examq"><span class="qn">3.</span>¿Por qué en un razonamiento válido con premisas falsas la conclusión puede ser cualquier cosa?</div>
+<div class="examq"><span class="qn">4.</span>Explique la diferencia entre variable ligada y variable libre, con un ejemplo de una función proposicional de dos variables donde sólo una esté cuantificada.</div>
+<div class="examq"><span class="qn">5.</span>¿Por qué el orden de los cuantificadores ∀ y ∃ mezclados sí importa, pero el orden de dos cuantificadores iguales (∀∀ o ∃∃) no?</div>
+<div class="examq"><span class="qn">6.</span>¿Cuáles son las dos condiciones que exige el Principio de Inducción Matemática? ¿Por qué no basta con una sola?</div>
+<div class="examq"><span class="qn">7.</span>¿Cuál es la diferencia entre pertenencia (∈) e inclusión (⊆)? Dé un ejemplo donde un mismo objeto pueda leerse de las dos formas según cómo se lo agrupe.</div>
+<div class="examq"><span class="qn">8.</span>¿Por qué la diferencia de conjuntos B−A no es conmutativa? Ilustre con un ejemplo numérico breve.</div>
+<div class="examq"><span class="qn">9.</span>Enuncie el Principio de Dualidad, tanto para lógica proposicional como para conjuntos.</div>
+<h3 class="topic">Ejercicios integradores (combinan varias unidades)</h3>
+<div class="examq"><span class="qn">I1.</span> Sea A={x/x∈ℕ, x es par, x≤10} y P(x): «x es divisible por 4». a) Escriba A por extensión. b) Determine el valor de verdad de ∀x∈A: P(x) y de ∃x∈A/ P(x). c) Escriba la negación de la proposición universal del punto anterior, tanto en símbolos como en lenguaje natural.</div>
+<div class="examq"><span class="qn">I2.</span> Demuestre por inducción matemática que, para todo n≥1, el conjunto potencia de un conjunto de cardinalidad n tiene 2ⁿ elementos. (Sugerencia: en el paso inductivo, piense en los subconjuntos de un conjunto de k+1 elementos separados en los que NO contienen al elemento nuevo y los que SÍ lo contienen).</div>
+<div class="examq"><span class="qn">I3.</span> Sean P(p,q): (p→q)∧(q→p) y A={1,2}, B={2,3}. a) Demuestre algebraicamente que P(p,q)≡(p↔q). b) Usando esa equivalencia como analogía, escriba en símbolos de conjuntos la doble inclusión que define la igualdad A=B, y determine si A=B.</div>
+<div class="examhead"><h3>Modelo de parcial de práctica N.º 1</h3><p>Unidades 1 a 4 — Ejercicios propuestos por este material, de estilo y nivel similar al de la cátedra. Duración sugerida: 90 minutos.</p></div>
+<div class="examq"><span class="qn">1.</span> (Unidad 1) Construya la tabla de verdad de P(p,q): (p∨q) → (p∧q) y clasifíquela. Luego, determine si P(p,q) es equivalente a p↔q.</div>
+<div class="examq"><span class="qn">2.</span> (Unidad 1) Simbolice y determine la validez del siguiente razonamiento mediante el método algebraico: «Si el sistema está actualizado, funciona correctamente. El sistema no funciona correctamente. Por lo tanto, el sistema no está actualizado».</div>
+<div class="examq"><span class="qn">3.</span> (Unidad 2) Con dominio los números enteros y P(x): «x es múltiplo de 3», determine el valor de verdad de ∀x: P(x)→P(3x) y justifique.</div>
+<div class="examq"><span class="qn">4.</span> (Unidad 2) Simbolice: «Todo número primo mayor que 2 es impar» y dé su negación completa, tanto en símbolos como en lenguaje natural.</div>
+<div class="examq"><span class="qn">5.</span> (Unidad 3) Demuestre por inducción matemática que Sₙ = 1+2+4+…+2ⁿ⁻¹ = 2ⁿ−1, para todo n≥1.</div>
+<div class="examq"><span class="qn">6.</span> (Unidad 4) Sea U={1,...,12}, A={1,2,3,4,6,12}, B={2,3,5,7,11}. Determine por extensión: a) A∩B  b) A∪B  c) ~A  d) A−B. Represente en un diagrama de Venn.</div>
+<div class="examq"><span class="qn">7.</span> (Unidad 4) Dado C={x,y,z}, determine P(C) y verifique que |P(C)|=2³. Proponga además una partición de C distinta de la trivial (cada elemento en su propio subconjunto).</div>
+<div class="examq"><span class="qn">8.</span> (Integrador) Con A={n∈ℕ/ n≤4} y Q(n): «2ⁿ ≥ n+3»: a) evalúe Q(n) para cada n∈A. b) A partir de lo observado, indique desde qué n₀ parece cumplirse Q(n) para todo n≥n₀, y demuéstrelo por inducción matemática.</div>
+<h4 class="subtopic">Solucionario del modelo de parcial N.º 1</h4>
+<div class="solkey"><strong>1.</strong> P(p,q)=(p∨q)→(p∧q) tiene tabla: VV→V, VF→F, FV→F, FF→V (antecedente F da V). Es CONTINGENCIA (no tautología ni contradicción). Comparando con p↔q (V,F,F,V): son EXACTAMENTE la misma tabla, por lo tanto P(p,q) ≡ (p↔q).</div>
+<div class="solkey"><strong>2.</strong> p: actualizado; q: funciona correctamente. Premisas: p→q, ~q. Por Modus Tollens directo: ~p. Razonamiento VÁLIDO: el sistema no está actualizado.</div>
+<div class="solkey"><strong>3.</strong> VERDADERA: si x es múltiplo de 3 (x=3k), entonces 3x=9k=3(3k) también es múltiplo de 3 — el condicional P(x)→P(3x) se cumple para cualquier entero x (incluso cuando P(x) es falso, el condicional resulta verdadero por antecedente falso).</div>
+<div class="solkey"><strong>4.</strong> Con A(x): x es primo, B(x): x>2, C(x): x es impar: ∀x:[(A(x)∧B(x))→C(x)]. Negación: ∃x/[(A(x)∧B(x))∧~C(x)] — «existe un número primo mayor que 2 que no es impar» (que, dicho sea de paso, es una proposición falsa: no existe tal contraejemplo entre los primos reales).</div>
+<div class="solkey"><strong>5.</strong> Base (n=1): S₁=1=2¹−1=1 ✓. HI: 1+2+4+…+2^(k−1)=2^k−1. Paso: sumando 2^k, (2^k−1)+2^k=2·2^k−1=2^(k+1)−1, que es la fórmula para n=k+1. Demostrado ∀n≥1.</div>
+<div class="solkey"><strong>6.</strong> a) A∩B={2,3}. b) A∪B={1,2,3,4,5,6,7,11,12}. c) ~A={5,7,8,9,10,11} (elementos de U no en A). d) A−B={1,4,6,12}.</div>
+<div class="solkey"><strong>7.</strong> P(C) = {∅,{x},{y},{z},{x,y},{x,z},{y,z},{x,y,z}}, con 8=2³ elementos, verificado. Partición no trivial: L={{x,y},{z}} (no vacíos, disjuntos, unión = C).</div>
+<div class="solkey"><strong>8.</strong> n=0: 2⁰=1 ≥ 0+3=3? NO. n=1: 2≥4? NO. n=2: 4≥5? NO. n=3: 8≥6? SÍ. n=4: 16≥7? SÍ. Parece cumplirse desde n₀=3. Demostración: Base (n=3): 8≥6 ✓. HI: 2^k≥k+3 para k≥3. Paso: 2^(k+1)=2·2^k≥2(k+3) (por HI) = 2k+6 = (k+3)+(k+3) ≥ (k+1)+3, ya que k+3≥k+1+... en realidad basta notar 2k+6 ≥ k+4 para todo k≥3 (pues k+2≥5>0), así que 2^(k+1) ≥ (k+1)+3. Demostrado ∀n≥3.</div>
+<footer class="unitend">— Fin de la sección de preparación para parciales —</footer>
+  </div>
+</main>
+</div>
+</body>
+</html>

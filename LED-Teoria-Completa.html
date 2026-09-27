@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lógica y Estructuras Discretas — Resumen Teórico Completo</title>
+<style>
+:root{
+  --navy:#152238; --navy2:#1f3457; --gold:#b8863b; --gold-l:#e4c489;
+  --paper:#faf9f6; --paper2:#f2f0ea; --ink:#20241f; --ink-soft:#4a5049;
+  --line:#dcd8cc; --good:#2f6d4f; --bad:#a13d3d; --code:#f4f1e8;
+  --maxw:800px; --radius:3px;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif;
+  line-height:1.65; font-size:17px;
+}
+h1,h2,h3,h4{
+  font-family: "Trebuchet MS", "Segoe UI", -apple-system, sans-serif;
+  color:var(--navy); line-height:1.25; font-weight:700;
+}
+.layout{display:flex; min-height:100vh;}
+nav#side{
+  width:300px; flex:0 0 300px; background:var(--navy); color:#e9e6da;
+  padding:22px 0 90px 0; position:sticky; top:0; height:100vh; overflow-y:auto;
+}
+nav#side::-webkit-scrollbar{width:8px;}
+nav#side::-webkit-scrollbar-thumb{background:#3a4c6e; border-radius:4px;}
+.brand{padding:0 22px 18px 22px; border-bottom:1px solid #2c3f60; margin-bottom:10px;}
+.brand .k{font-family:"Trebuchet MS",sans-serif; letter-spacing:.04em; font-size:12px; color:var(--gold-l); text-transform:uppercase;}
+.brand h1{color:#fff; font-size:21px; margin:4px 0 2px 0;}
+.brand p{margin:0; font-size:12.5px; color:#a9b4c9; font-family:"Trebuchet MS",sans-serif;}
+.navgroup{margin:6px 0;}
+.navgroup > summary{
+  cursor:pointer; padding:10px 22px; font-family:"Trebuchet MS",sans-serif;
+  font-weight:700; font-size:14.5px; color:#f2ead8; list-style:none;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.navgroup > summary::-webkit-details-marker{display:none;}
+.navgroup > summary:hover{background:#20335a;}
+.navgroup > summary::after{content:"▸"; color:var(--gold-l); transition:transform .15s;}
+.navgroup[open] > summary::after{transform:rotate(90deg);}
+.navgroup ul{list-style:none; margin:0; padding:2px 0 8px 0;}
+.navgroup a{
+  display:block; padding:7px 22px 7px 34px; color:#c3cbdc; text-decoration:none;
+  font-family:"Trebuchet MS",sans-serif; font-size:13.3px; border-left:3px solid transparent;
+}
+.navgroup a:hover{color:#fff; background:#20335a; border-left-color:var(--gold);}
+main{flex:1 1 auto; min-width:0;}
+.topbar{
+  position:sticky; top:0; z-index:5; background:rgba(250,249,246,.94); backdrop-filter:blur(4px);
+  border-bottom:1px solid var(--line); padding:10px 40px; display:flex; justify-content:flex-end; gap:10px;
+}
+.topbar button{
+  font-family:"Trebuchet MS",sans-serif; font-size:13px; background:var(--navy); color:#fff;
+  border:none; padding:8px 16px; border-radius:3px; cursor:pointer;
+}
+.topbar button:hover{background:var(--navy2);}
+.wrap{max-width:var(--maxw); margin:0 auto; padding:38px 40px 120px 40px;}
+.cover{
+  min-height:70vh; display:flex; flex-direction:column; justify-content:center;
+  border-bottom:3px double var(--gold); margin-bottom:40px; padding-bottom:30px;
+}
+.cover .k{font-family:"Trebuchet MS",sans-serif; color:var(--gold); letter-spacing:.12em; text-transform:uppercase; font-size:13px;}
+.cover h1{font-size:44px; margin:10px 0 6px 0;}
+.cover h2{font-size:20px; color:var(--ink-soft); font-weight:400; font-style:italic; margin:0 0 22px 0;}
+.cover .meta{font-family:"Trebuchet MS",sans-serif; font-size:14px; color:var(--ink-soft); line-height:2;}
+.unit-title{
+  margin-top:64px; padding-top:18px; border-top:3px double var(--gold);
+}
+.unit-title .k{font-family:"Trebuchet MS",sans-serif; color:var(--gold); letter-spacing:.1em; text-transform:uppercase; font-size:13px;}
+.unit-title h2{font-size:32px; margin:4px 0 14px 0;}
+.unit-intro{color:var(--ink-soft); font-size:16px;}
+h3.topic{font-size:24px; margin-top:46px; padding-bottom:6px; border-bottom:1px solid var(--line);}
+h4.subtopic{font-size:18.5px; margin-top:28px; color:var(--navy2);}
+p{margin:12px 0;}
+.box{border:1px solid var(--line); border-left:5px solid var(--navy); background:#fff;
+  padding:14px 18px; margin:18px 0; border-radius:0 var(--radius) var(--radius) 0;}
+.box .lbl{font-family:"Trebuchet MS",sans-serif; font-weight:700; font-size:12.5px;
+  color:var(--navy); text-transform:uppercase; letter-spacing:.05em; margin-bottom:6px;}
+.box.def{border-left-color:var(--navy);}
+.box.prop{border-left-color:var(--gold);}
+.box.ex{border-left-color:var(--good); background:#f6faf7;}
+.box.ex .lbl{color:var(--good);}
+.box.err{border-left-color:var(--bad); background:#fbf5f5;}
+.box.err .lbl{color:var(--bad);}
+.box.rel{border-left-color:#5a4a8a; background:#f8f6fb;}
+.box.rel .lbl{color:#5a4a8a;}
+table{border-collapse:collapse; width:100%; margin:16px 0; font-size:15.3px;}
+table.tv{width:auto; margin:14px auto;}
+th,td{border:1px solid var(--line); padding:6px 13px; text-align:center;}
+th{background:var(--navy); color:#fff; font-family:"Trebuchet MS",sans-serif; font-weight:600; font-size:13.5px;}
+td{background:#fff;}
+table.props td:first-child, table.props th:first-child{text-align:left; font-family:"Trebuchet MS",sans-serif; font-weight:700;}
+table.props td{text-align:left;}
+tr:nth-child(even) td{background:#f6f5f0;}
+.formula{
+  font-family:"Cambria Math", Georgia, serif; text-align:center; font-size:19px;
+  background:var(--code); border:1px solid var(--line); padding:12px; margin:14px 0; border-radius:3px;
+}
+code, .sym{font-family:Consolas,"Courier New",monospace; background:var(--code); padding:1px 5px; border-radius:2px;}
+.venn{display:block; margin:18px auto; max-width:340px;}
+.glossary dt{font-family:"Trebuchet MS",sans-serif; font-weight:700; color:var(--navy); margin-top:10px;}
+.glossary dd{margin:2px 0 8px 0;}
+details.repaso{border:1px solid var(--line); border-radius:3px; margin:10px 0; padding:10px 14px; background:#fff;}
+details.repaso summary{cursor:pointer; font-family:"Trebuchet MS",sans-serif; font-weight:600;}
+details.repaso .ans{margin-top:8px; padding-top:8px; border-top:1px dashed var(--line); color:var(--ink-soft);}
+.unit-summary{background:#fff; border:1px solid var(--line); border-radius:4px; padding:4px 22px; margin:30px 0;}
+.unit-summary h4{color:var(--navy);}
+footer.unitend{text-align:center; color:#a09986; font-family:"Trebuchet MS",sans-serif; font-size:12.5px; margin:50px 0 10px 0;}
+.toc-index{columns:2; column-gap:34px;}
+.toc-index li{break-inside:avoid; margin-bottom:5px;}
+a{color:var(--navy2);}
+@media (max-width:880px){
+  .layout{flex-direction:column;}
+  nav#side{position:relative; width:100%; height:auto; flex:none;}
+  .wrap{padding:24px 18px 90px 18px;}
+  .topbar{padding:8px 18px;}
+}
+@media print{
+  nav#side, .topbar{display:none !important;}
+  .layout{display:block;}
+  .wrap{max-width:100%; padding:0 8mm;}
+  a{color:inherit; text-decoration:none;}
+  .unit-title{page-break-before:always;}
+  .box, table{page-break-inside:avoid;}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<nav id="side">
+  <div class="brand">
+    <div class="k">Guía de estudio</div>
+    <h1>LED — Teoría</h1>
+    <p>UTN FRC &middot; 2026</p>
+  </div>
+  <details class="navgroup" open><summary>Inicio</summary><ul>
+    <li><a href="#top">Portada</a></li><li><a href="#indice">Índice</a></li>
+  </ul></details>
+  <details class="navgroup" open><summary>Unidad 1 &middot; Proposiciones</summary><ul>
+    <li><a href="#u1-1">1.1 Introducción</a></li>
+    <li><a href="#u1-2">1.2 Proposiciones</a></li>
+    <li><a href="#u1-3">1.3 Conectivos lógicos</a></li>
+    <li><a href="#u1-4">1.4 Relaciones entre proposiciones</a></li>
+  </ul></details>
+  <details class="navgroup"><summary>Unidad 2 &middot; Predicados</summary><ul>
+    <li><a href="#u2-1">2.2 Función proposicional</a></li>
+    <li><a href="#u2-2">2.3 Cuantificadores y clases</a></li>
+    <li><a href="#u2-3">2.4 Proposiciones categóricas</a></li>
+    <li><a href="#u2-4">2.5 Razonamiento con predicados</a></li>
+  </ul></details>
+  <details class="navgroup"><summary>Unidad 3 &middot; Inducción</summary><ul>
+    <li><a href="#u3-1">3.2 Sucesiones y series</a></li>
+    <li><a href="#u3-2">3.3 Principio de Inducción</a></li>
+  </ul></details>
+  <details class="navgroup"><summary>Unidad 4 &middot; Conjuntos</summary><ul>
+    <li><a href="#u4-1">4.1–4.2 Concepto y notación</a></li>
+    <li><a href="#u4-2">4.3 Relaciones entre conjuntos</a></li>
+    <li><a href="#u4-3">4.4 Operaciones</a></li>
+    <li><a href="#u4-4">4.5 Familias de conjuntos</a></li>
+    <li><a href="#u4-5">4.6 Multiconjuntos</a></li>
+  </ul></details>
+  <details class="navgroup"><summary>Referencia</summary><ul>
+    <li><a href="#glosario">Glosario</a></li>
+  </ul></details>
+</nav>
+
+<main id="top">
+  <div class="topbar">
+    <button onclick="window.print()">🖶 Imprimir / Guardar como PDF</button>
+  </div>
+  <div class="wrap">
+    
+<div class="cover">
+  <div class="k">Guía de estudio &middot; UTN FRC &middot; Año 2026</div>
+  <h1>Lógica y Estructuras Discretas</h1>
+  <h2>Resumen teórico completo — Unidades 1, 2, 3 y 4 (Conjuntos)</h2>
+  <div class="meta">
+    Unidad 1 &nbsp;·&nbsp; Lógica Matemática — Proposiciones<br>
+    Unidad 2 &nbsp;·&nbsp; Lógica de Predicados de Primer Orden<br>
+    Unidad 3 &nbsp;·&nbsp; Inducción Matemática<br>
+    Unidad 4 &nbsp;·&nbsp; Conjuntos (tema exclusivo evaluado de esta unidad)<br><br>
+    Elaborado a partir de los apuntes de cátedra provistos por el estudiante.
+    Documento complementario: <em>Guía Práctica</em> (ejercicios resueltos y de práctica).
+  </div>
+</div>
+<div class="unit-title" id="indice" style="border-top:none; margin-top:0;">
+  <div class="k">Índice</div><h2>Contenidos</h2>
+</div>
+<ul class="toc-index">
+  <li><a href="#u1">Unidad 1 — Lógica Matemática (Proposiciones)</a></li>
+  <li style="margin-left:14px;"><a href="#u1-1">1.1 Introducción</a></li>
+  <li style="margin-left:14px;"><a href="#u1-2">1.2 Proposiciones</a></li>
+  <li style="margin-left:14px;"><a href="#u1-3">1.3 Conectivos y operaciones lógicas</a></li>
+  <li style="margin-left:14px;"><a href="#u1-4">1.4 Relaciones entre proposiciones</a></li>
+  <li><a href="#u2">Unidad 2 — Lógica de Predicados</a></li>
+  <li style="margin-left:14px;"><a href="#u2-1">2.2 Función proposicional</a></li>
+  <li style="margin-left:14px;"><a href="#u2-2">2.3 Cuantificadores y clases</a></li>
+  <li style="margin-left:14px;"><a href="#u2-3">2.4 Proposiciones categóricas</a></li>
+  <li style="margin-left:14px;"><a href="#u2-4">2.5 Razonamiento con predicados</a></li>
+  <li><a href="#u3">Unidad 3 — Inducción Matemática</a></li>
+  <li style="margin-left:14px;"><a href="#u3-1">3.2 Sucesiones y series</a></li>
+  <li style="margin-left:14px;"><a href="#u3-2">3.3 Principio de Inducción Matemática</a></li>
+  <li><a href="#u4">Unidad 4 — Conjuntos</a></li>
+  <li style="margin-left:14px;"><a href="#u4-1">4.1–4.2 Concepto y notación</a></li>
+  <li style="margin-left:14px;"><a href="#u4-2">4.3 Relaciones entre conjuntos</a></li>
+  <li style="margin-left:14px;"><a href="#u4-3">4.4 Operaciones con conjuntos</a></li>
+  <li style="margin-left:14px;"><a href="#u4-4">4.5 Familias de conjuntos</a></li>
+  <li style="margin-left:14px;"><a href="#u4-5">4.6 Multiconjuntos</a></li>
+  <li><a href="#glosario">Glosario de símbolos y términos</a></li>
+</ul>
+
+<div class="unit-title" id="u1"><div class="k">Unidad 1</div><h2>Lógica Matemática — Proposiciones</h2>
+<p class="unit-intro">La lógica matemática (o simbólica) es la rama de las ciencias formales que estudia la validez de los métodos de razonamiento. Sus dos grandes objetivos son: eliminar la ambigüedad del lenguaje natural y establecer reglas que determinen la validez de un razonamiento. Todo lo que sigue — proposiciones, conectivos, equivalencias y razonamientos — construye paso a paso ese vocabulario y esas reglas.</p></div>
+<h3 class="topic" id="u1-1">1.1. Introducción a la lógica matemática</h3>
+<p>La lógica clásica llega desde la Grecia clásica. <strong>Aristóteles</strong> (siglo III a.C.) legó la lógica como un cuerpo sistemático de principios, definiciones y reglas de inferencia que permaneció casi sin cambios por más de dos mil años. Recién en el siglo XIX <strong>George Boole</strong> (1815-1864) dio origen a la lógica simbólica al usar por primera vez símbolos, al estilo matemático, para razonar sobre el pensamiento («Un análisis matemático de la lógica», 1847). Le siguieron De Morgan, Peirce, Peano, Cantor, Frege y, ya en el siglo XX, Russell y Whitehead con su <em>Principia Mathematica</em> (1910-1913).</p>
+<p>La relación entre la lógica matemática y la informática es esencial: desde la programación elemental de algoritmos hasta la inteligencia artificial, se necesita estructurar el pensamiento en forma lógica, con métodos de inferencia claros y válidos.</p>
+<h3 class="topic" id="u1-2">1.2. Proposiciones</h3>
+<p>No toda oración del castellano puede evaluarse como verdadera o falsa. Una pregunta («¿Lloverá mañana?»), una orden («¡Hagan silencio!») o una expresión con una incógnita sin valor asignado (2+x=4) no tienen, por sí mismas, un valor de verdad determinado. La lógica trabaja únicamente con las oraciones que sí lo tienen.</p>
+<div class="box def"><div class="lbl">Definición</div>Una <strong>proposición lógica</strong> es toda oración declarativa de la cual pueda decirse que es <strong>verdadera</strong> o <strong>falsa</strong>, pero nunca ambas cosas a la vez.</div>
+<p>Las proposiciones <strong>simples</strong> (un sujeto y un predicado simple, cuyo valor de verdad se determina por su sola lectura) se denotan con letras minúsculas: p, q, r,… Ejemplo: <em>p: Un computador es un dispositivo electrónico.</em> Cuando una letra representa a cualquier proposición sin especificar cuál, se la llama <strong>variable proposicional</strong>.</p>
+<p>Detrás de la definición de proposición hay tres axiomas fundamentales, base de toda la lógica bivalente (solo dos valores de verdad):</p>
+<table class="props"><tr><th>Principio</th><th>Enunciado</th></tr><tr><td>De Identidad</td><td>Toda proposición es idéntica a sí misma, y sólo a sí misma («A es A»).</td></tr><tr><td>De No Contradicción</td><td>Dadas dos proposiciones contradictorias, no pueden ser ambas verdaderas.</td></tr><tr><td>Del Tercero Excluido</td><td>Dadas dos proposiciones contradictorias, no pueden ser ambas falsas.</td></tr></table>
+<p>Juntos, estos tres principios dicen exactamente lo que exige la definición: una proposición no puede ser verdadera y falsa a la vez, y no puede no ser ni una cosa ni la otra.</p>
+<p>Es útil organizar en una tabla todos los valores de verdad posibles de una o varias proposiciones. Con una proposición p hay 2 filas posibles (V, F); con dos proposiciones simultáneas, 4 filas; en general, con <strong>n</strong> proposiciones simples se necesitan <strong>2<sup>n</sup></strong> filas para contemplar todas las combinaciones posibles (con 10 proposiciones ya serían 1024 filas).</p>
+<table class="tv"><tr><th>p</th></tr><tr><td>V</td></tr><tr><td>F</td></tr></table>
+<div class="box err"><div class="lbl">Error frecuente</div>Confundir «letra V/F» con el símbolo numérico 1/0: son notaciones equivalentes (V=1, F=0 en contextos de electrónica/Boole), pero conviene ser consistente con la notación de la cátedra (V/F).</div>
+<div class="box def"><div class="lbl">Definición</div>Una <strong>proposición compuesta</strong> es toda combinación de proposiciones simples mediante vocablos lingüísticos llamados <strong>conectivos lógicos</strong>. Se denotan con letras mayúsculas: P, Q, R,… y, si se quiere destacar de qué proposiciones simples se compone, P(p, q, r).</div>
+<div class="box ex"><div class="lbl">Ejemplo</div>En «Si conecto mi monitor a 380 voltios entonces explotará y no podré repararlo» se identifican: p: yo conecto mi monitor a 380 voltios; q: mi monitor explotará; r: yo podré reparar mi monitor. La oración completa es una proposición compuesta que combina p, q y r mediante «si…entonces», «y» y «no».</div>
+<p>El valor de verdad de una proposición compuesta depende exclusivamente de los valores de verdad de sus proposiciones simples y de cómo operan sobre ellos los conectivos que las vinculan.</p>
+<h3 class="topic" id="u1-3">1.3. Conectivos lógicos y operaciones lógicas</h3>
+<p>Con dos valores de verdad posibles hay 4 operadores unarios posibles y 16 operadores binarios posibles. De todos ellos, la lógica sólo destaca a los conectivos que corresponden a vocablos de uso habitual en el lenguaje natural (y porque cualquier otro operador puede reconstruirse combinando estos pocos).</p>
+<table class="props"><tr><th>Conectivo</th><th>Vocablo</th><th>Símbolo(s)</th><th>Se lee</th></tr><tr><td>Negación</td><td>no</td><td>~, ¬</td><td>no p</td></tr><tr><td>Conjunción</td><td>y</td><td>∧, &amp;</td><td>p y q</td></tr><tr><td>Disyunción inclusiva</td><td>o</td><td>∨</td><td>p o q (o ambos)</td></tr><tr><td>Disyunción exclusiva</td><td>o bien... o bien</td><td>⊻</td><td>o p, o q, pero no ambos</td></tr><tr><td>Condicional simple</td><td>si… entonces</td><td>→</td><td>si p entonces q</td></tr><tr><td>Condicional doble</td><td>si y sólo si</td><td>↔</td><td>p si y sólo si q</td></tr></table>
+<div class="box def"><div class="lbl">Definición</div>Dada una proposición p, la <strong>negación de p</strong>, denotada ~p, es la proposición que es verdadera cuando p es falsa, y falsa cuando p es verdadera.</div>
+<table class="tv"><tr><th>p</th><th>~p</th></tr><tr><td>V</td><td>F</td></tr><tr><td>F</td><td>V</td></tr></table>
+<div class="box ex"><div class="lbl">Ejemplo</div>p: La Tierra es el tercer planeta del sistema solar → ~p: La Tierra no es el tercer planeta del sistema solar.</div>
+<div class="box def"><div class="lbl">Definición</div>Dadas p y q, la <strong>conjunción</strong> p ∧ q ("p y q") es verdadera sólo si tanto p como q son verdaderas, y falsa en cualquier otro caso.</div>
+<table class="tv"><tr><th>p</th><th>q</th><th>p ∧ q</th></tr><tr><td>V</td><td>V</td><td>V</td></tr><tr><td>V</td><td>F</td><td>F</td></tr><tr><td>F</td><td>V</td><td>F</td></tr><tr><td>F</td><td>F</td><td>F</td></tr></table>
+<div class="box def"><div class="lbl">Definición</div><strong>Tautología</strong> (V₀): siempre verdadera, sea cual sea el valor de sus componentes. <strong>Contradicción</strong> (F₀): siempre falsa. <strong>Contingencia</strong>: a veces verdadera, a veces falsa, según los valores de sus componentes.</div>
+<div class="box def"><div class="lbl">Definición — Satisfacibilidad</div>Una proposición compuesta es <strong>satisfacible</strong> si existe alguna combinación de valores de verdad de sus proposiciones simples que la haga verdadera (basta con que aparezca al menos un V en su tabla de verdad). Determinar esto en general se llama el <strong>problema SAT</strong>, uno de los más estudiados de la computación.</div>
+<p>El "o" del castellano es ambiguo: puede ser incluyente («viajaré con Juan, con María, o con ambos») o excluyente («nací en Mendoza o en Córdoba, no en ambas»). La lógica resuelve la ambigüedad definiendo dos conectivos distintos.</p>
+<div class="box def"><div class="lbl">Definición</div>La <strong>disyunción inclusiva</strong> p ∨ q ("p o q") es falsa sólo si ambas son falsas, y verdadera en cualquier otro caso.</div>
+<table class="tv"><tr><th>p</th><th>q</th><th>p ∨ q</th></tr><tr><td>V</td><td>V</td><td>V</td></tr><tr><td>V</td><td>F</td><td>V</td></tr><tr><td>F</td><td>V</td><td>V</td></tr><tr><td>F</td><td>F</td><td>F</td></tr></table>
+<div class="box def"><div class="lbl">Definición</div>La <strong>disyunción exclusiva</strong> p ⊻ q ("o bien p, o bien q") es verdadera si p y q tienen distinto valor de verdad, y falsa si tienen el mismo valor.</div>
+<table class="tv"><tr><th>p</th><th>q</th><th>p ⊻ q</th></tr><tr><td>V</td><td>V</td><td>F</td></tr><tr><td>V</td><td>F</td><td>V</td></tr><tr><td>F</td><td>V</td><td>V</td></tr><tr><td>F</td><td>F</td><td>F</td></tr></table>
+<div class="box def"><div class="lbl">Definición</div>Dadas p y q, el <strong>condicional simple</strong> p → q ("si p entonces q") es falso <em>sólo</em> cuando p es verdadera y q es falsa; en todos los demás casos es verdadero. p se llama <strong>antecedente</strong> (o hipótesis) y q <strong>consecuente</strong> (o conclusión). Se dice también que p es condición suficiente para q, y q condición necesaria para p.</div>
+<table class="tv"><tr><th>p</th><th>q</th><th>p → q</th></tr><tr><td>V</td><td>V</td><td>V</td></tr><tr><td>V</td><td>F</td><td>F</td></tr><tr><td>F</td><td>V</td><td>V</td></tr><tr><td>F</td><td>F</td><td>V</td></tr></table>
+<p><strong>¿Cómo funciona?</strong> Piense en el condicional como en un compromiso: «Si me prestan el auto, te llevo al cine». Si me prestan el auto (p=V) y te llevo (q=V), cumplí; si me prestan el auto y no te llevo, rompí mi palabra (falso); pero si no me prestan el auto (p=F), quedo liberado del compromiso sin importar si finalmente vamos al cine o no — el condicional resulta verdadero por «vacuidad» del antecedente.</p>
+<div class="box err"><div class="lbl">Error frecuente</div>El error más común es creer que p → q exige alguna relación de <em>causa</em> entre antecedente y consecuente. En lógica no hace falta: «si las milanesas de vidrio son nutritivas entonces el cielo es celeste» es, formalmente, una proposición condicional perfectamente válida.</div>
+<div class="box def"><div class="lbl">Definición — Recíproca, Contraria, Contrarrecíproca</div>Dado un condicional R: p → q, se definen tres proposiciones asociadas: <strong>recíproca</strong> (q → p), <strong>contraria</strong> (~p → ~q) y <strong>contrarrecíproca</strong> (~q → ~p).</div>
+<div class="box prop"><div class="lbl">Propiedad / Teorema</div>Un condicional y su <strong>contrarrecíproca son siempre lógicamente equivalentes</strong> entre sí (misma tabla de verdad); del mismo modo lo son la recíproca y la contraria entre sí. En general, un condicional NO es equivalente a su recíproca ni a su contraria.</div>
+<div class="box ex"><div class="lbl">Ejemplo</div>R: «Si compro las entradas, voy al cine» (p→q).<br>• Recíproca (q→p): «Si voy al cine, compro las entradas».<br>• Contraria (~p→~q): «Si no compro las entradas, no voy al cine».<br>• Contrarrecíproca (~q→~p): «Si no voy al cine, no compro las entradas» — dice exactamente lo mismo que R.</div>
+<div class="box def"><div class="lbl">Definición</div>El <strong>condicional doble</strong> p ↔ q ("p si y sólo si q") es verdadero cuando p y q tienen el <em>mismo</em> valor de verdad, y falso cuando difieren. Equivale al «compromiso de ida y vuelta»: p ↔ q ≡ (p → q) ∧ (q → p).</div>
+<table class="tv"><tr><th>p</th><th>q</th><th>p ↔ q</th></tr><tr><td>V</td><td>V</td><td>V</td></tr><tr><td>V</td><td>F</td><td>F</td></tr><tr><td>F</td><td>V</td><td>F</td></tr><tr><td>F</td><td>F</td><td>V</td></tr></table>
+<p>Para no llenar las expresiones de paréntesis se establece una jerarquía de evaluación. A igual jerarquía, se evalúa de izquierda a derecha; los paréntesis siempre pueden alterar el orden.</p>
+<table class="props"><tr><th>Jerarquía</th><th>Conectivo</th></tr><tr><td>1° (mayor)</td><td>~</td></tr><tr><td>2°</td><td>∧</td></tr><tr><td>3°</td><td>∨</td></tr><tr><td>4°</td><td>→</td></tr><tr><td>5° (menor)</td><td>↔</td></tr></table>
+<div class="box ex"><div class="lbl">Ejemplo</div>P ∨ Q → R se evalúa como (P ∨ Q) → R, porque ∨ tiene mayor precedencia que →.</div>
+<p>No hace falta más que negación, conjunción y disyunción: cualquier tabla de verdad, por compleja que sea, puede reconstruirse con solo estos tres conectivos. Dos procedimientos formales para hacerlo:</p>
+<div class="box def"><div class="lbl">Definición</div><strong>Forma Normal Disyuntiva (FND):</strong> se toman las filas donde P es verdadera; en cada una, se arma un <em>min-término</em> conjuntando cada proposición simple (tal cual si es V, negada si es F); la FND es la disyunción de todos los min-términos.<br><br><strong>Forma Normal Conjuntiva (FNC):</strong> por <em>dualidad</em>, se toman las filas donde P es falsa; en cada una se arma un <em>max-término</em> disyuntando cada proposición (negada si es V, tal cual si es F); la FNC es la conjunción de todos los max-términos.</div>
+<div class="box ex"><div class="lbl">Ejemplo</div>Para P: p ↔ q, P es verdadera en (V,V) y (F,F). Min-términos: (p∧q) y (~p∧~q). FND: (p ∧ q) ∨ (~p ∧ ~q). — P es falsa en (V,F) y (F,V). Max-términos: (~p∨q) y (p∨~q). FNC: (~p ∨ q) ∧ (p ∨ ~q).</div>
+<div class="box prop"><div class="lbl">Propiedad / Teorema</div><strong>Principio de Dualidad:</strong> si en cualquier teorema de la lógica se intercambian simultáneamente V₀↔F₀ y ∧↔∨, el resultado es también un teorema válido de la lógica.</div>
+<h3 class="topic" id="u1-4">1.4. Relaciones entre proposiciones</h3>
+<p>A diferencia de los conectivos (que <em>construyen</em> nuevas proposiciones), las relaciones que siguen no generan proposiciones nuevas: sólo se cumplen (son <strong>válidas</strong>) o no se cumplen (son <strong>inválidas</strong>) entre proposiciones ya dadas. Nunca son verdaderas ni falsas — no son proposiciones.</p>
+<div class="box def"><div class="lbl">Definición</div>Dos proposiciones P y Q son <strong>lógicamente equivalentes</strong>, denotado P ≡ Q, si para cualquier combinación de valores de verdad de sus proposiciones simples, P y Q resultan tener el mismo valor de verdad (misma tabla de verdad). Equivalentemente: P ≡ Q es válida si y sólo si P ↔ Q es una tautología.</div>
+<p>La equivalencia lógica cumple las tres propiedades de toda relación de equivalencia: <strong>reflexiva</strong> (P≡P), <strong>simétrica</strong> (si P≡Q entonces Q≡P) y <strong>transitiva</strong> (si P≡Q y Q≡R entonces P≡R).</p>
+<p>Del mismo modo en que en aritmética reescribimos 2·(3+5) aplicando la propiedad distributiva sin recalcular todo desde cero, en lógica podemos reemplazar un trozo de una proposición por otro equivalente, sin construir la tabla de verdad completa, apoyándonos en una lista de equivalencias ya demostradas (las <strong>leyes lógicas</strong>).</p>
+<p>Son verdaderos <strong>teoremas</strong> —no axiomas ni definiciones— que se demuestran construyendo tablas de verdad. Son la principal herramienta del método algebraico.</p>
+<table class="props"><tr><th>Ley</th><th>De la conjunción</th><th>De la disyunción</th></tr><tr><td>Involución</td><td colspan="2">~(~P) ≡ P</td></tr><tr><td>Idempotencia</td><td>P ∧ P ≡ P</td><td>P ∨ P ≡ P</td></tr><tr><td>Conmutativa</td><td>P ∧ Q ≡ Q ∧ P</td><td>P ∨ Q ≡ Q ∨ P</td></tr><tr><td>Asociativa</td><td>(P∧Q)∧R ≡ P∧(Q∧R)</td><td>(P∨Q)∨R ≡ P∨(Q∨R)</td></tr><tr><td>Distributiva</td><td>P∧(Q∨R) ≡ (P∧Q)∨(P∧R)</td><td>P∨(Q∧R) ≡ (P∨Q)∧(P∨R)</td></tr><tr><td>De Morgan</td><td>~(P∧Q) ≡ ~P∨~Q</td><td>~(P∨Q) ≡ ~P∧~Q</td></tr><tr><td>Neutro</td><td>P ∧ V₀ ≡ P</td><td>P ∨ F₀ ≡ P</td></tr><tr><td>Complemento</td><td>P ∧ ~P ≡ F₀</td><td>P ∨ ~P ≡ V₀</td></tr><tr><td>Acotación</td><td>P ∧ F₀ ≡ F₀</td><td>P ∨ V₀ ≡ V₀</td></tr><tr><td>Absorción</td><td>P ∧ (P∨Q) ≡ P</td><td>P ∨ (P∧Q) ≡ P</td></tr></table>
+<table class="props"><tr><th>Propiedad del condicional / bicondicional</th><th></th></tr><tr><td>P → Q ≡ ~(P ∧ ~Q)</td><td>reescribe el condicional con negación y conjunción</td></tr><tr><td>P → Q ≡ ~P ∨ Q</td><td>de Morgan sobre la anterior</td></tr><tr><td>P → Q ≡ ~Q → ~P</td><td>contrarrecíprocas equivalentes</td></tr><tr><td>P ↔ Q ≡ (P→Q) ∧ (Q→P)</td><td>bicondicional = ida y vuelta</td></tr><tr><td>P ↔ Q ≡ ~P ↔ ~Q</td><td>al negar ambas, el bicondicional se conserva</td></tr><tr><td>P ↔ Q ≡ (P∧Q) ∨ (~P∧~Q)</td><td>bicondicional con ∧, ∨, ~</td></tr></table>
+<div class="box ex"><div class="lbl">Ejemplo</div>Demostrar (q→p) ∧ (p→q) ≡ p↔q: (q→p)∧(p→q) ≡ (p→q)∧(q→p) [porque q→p y p→q son cada uno contrarrecíproco del otro... en realidad se reordena por conmutatividad] ≡ p ↔ q, por definición de bicondicional como condicional de ida y vuelta.</div>
+<div class="box def"><div class="lbl">Definición</div>P <strong>implica lógicamente</strong> a Q (Q es <strong>consecuencia lógica</strong> de P), denotado P ⇒ Q, si en toda fila de la tabla de verdad donde P es verdadera, Q también lo es. No importa qué ocurre en las filas donde P es falsa. Equivalentemente: P ⇒ Q es válida si y sólo si P → Q es una tautología.</div>
+<div class="box rel"><div class="lbl">Relación con otros temas</div>La consecuencia lógica es la base formal del <strong>razonamiento deductivo</strong> (1.4.5): un razonamiento es válido exactamente cuando hay implicación lógica entre la conjunción de sus premisas y su conclusión.</div>
+<div class="box def"><div class="lbl">Definición</div>Dadas premisas P₁, P₂, …, Pₙ y una conclusión Q, el <strong>razonamiento deductivo</strong> P₁, P₂, …, Pₙ ⊢ Q ("por lo tanto Q") es <strong>válido</strong> si cada vez que todas las premisas son simultáneamente verdaderas, la conclusión también resulta verdadera. Un razonamiento válido se llama también <strong>regla de inferencia</strong>; uno inválido, <strong>falacia</strong>.</div>
+<div class="box prop"><div class="lbl">Propiedad / Teorema</div>Un razonamiento P₁,…,Pₙ ⊢ Q es válido si y sólo si (P₁∧P₂∧…∧Pₙ) → Q es una tautología. Esto da un segundo método para verificar la validez, sin mirar fila por fila.</div>
+<div class="box err"><div class="lbl">Error frecuente</div>«Razonamiento válido» NO significa «conclusión verdadera». Si se parte de premisas falsas, un razonamiento válido puede perfectamente arrojar una conclusión falsa (o verdadera): la validez garantiza la relación entre premisas y conclusión, no la verdad de las premisas en el mundo real. Ejemplo clásico: «Las milanesas de vidrio son nutritivas. Si son nutritivas, el vidrio es un alimento. Por lo tanto, el vidrio es un alimento» — es un modus ponens válido, con conclusión falsa, porque la primera premisa es falsa.</div>
+<table class="props"><tr><th>Nombre</th><th>Regla (en símbolos)</th></tr><tr><td>Modus Ponens (Ley de Separación)</td><td>P → Q, P ⊢ Q</td></tr><tr><td>Modus Tollens (Ley de Contraposición)</td><td>P → Q, ~Q ⊢ ~P</td></tr><tr><td>Silogismo Hipotético (transitividad de →)</td><td>P → Q, Q → R ⊢ P → R</td></tr><tr><td>Silogismo Disyuntivo (Ley de Eliminación)</td><td>P ∨ Q, ~P ⊢ Q</td></tr><tr><td>Ley de Resolución</td><td>P ∨ Q, ~P ∨ R ⊢ Q ∨ R</td></tr><tr><td>Conjunción (Ley de Combinación)</td><td>P, Q ⊢ P ∧ Q</td></tr><tr><td>Disyunción (Ley de Suma)</td><td>P ⊢ P ∨ Q</td></tr><tr><td>Ley de Simplificación</td><td>P ∧ Q ⊢ P</td></tr></table>
+<div class="box ex"><div class="lbl">Ejemplo</div>«Si tú estudias entonces aprobarás. Tú estudias. Por lo tanto, aprobarás» es exactamente el formato del Modus Ponens (p→q, p ⊢ q): razonamiento válido.</div>
+<p>Cuando el número de proposiciones simples crece, construir la tabla de verdad se vuelve costoso (crece exponencialmente: 2ⁿ filas). El <strong>método deductivo algebraico</strong> deriva la conclusión paso a paso, aplicando reglas de inferencia y equivalencias sobre las premisas, sin tabla de verdad.</p>
+<div class="box ex"><div class="lbl">Ejemplo</div>Premisas: (1) p→q, (2) q→r, (3) r∨s, (4) ~s. Conclusión: ~p.<br>Paso 1: p→r — de (1) y (2), Silogismo Hipotético.<br>Paso 2: ~r→s — de (3), equivalencia P∨Q ≡ ~P→Q.<br>Paso 3: p→s — de los pasos 1 y 2, Silogismo Hipotético.<br>Paso 4: ~p — de paso 3 y premisa (4), Modus Tollens. ∎</div>
+<table class="props"><tr><th>Término</th><th>Significado</th></tr><tr><td>Teorema</td><td>Proposición cuya verdad se deduce de premisas, axiomas y teoremas ya probados.</td></tr><tr><td>Lema</td><td>Pequeño teorema, no necesariamente interesante en sí mismo, útil para probar otro teorema.</td></tr><tr><td>Corolario</td><td>Resultado que se sigue de inmediato de un teorema recién probado.</td></tr><tr><td>Demostración</td><td>Proceso que, desde premisas, axiomas y proposiciones ya conocidas, prueba la conclusión de un teorema usando reglas de inferencia y equivalencias.</td></tr><tr><td>Demostración directa</td><td>El método deductivo algebraico aplicado paso a paso desde las premisas.</td></tr><tr><td>Reducción al absurdo</td><td>Se supone falsa la conclusión, se la agrega como premisa, y se llega a una contradicción; luego la conclusión debe ser verdadera.</td></tr><tr><td>Refutación / contraejemplo</td><td>Mostrar un caso donde las premisas se cumplen pero la conclusión no, para probar que un enunciado NO es un teorema.</td></tr></table>
+<div class="unit-summary"><h4>Resumen de la Unidad 1</h4><ul><li><strong>Proposición</strong>: oración declarativa, verdadera o falsa, nunca ambas.</li><li>6 conectivos clave: negación, conjunción, disyunción (inclusiva/exclusiva), condicional simple y doble.</li><li>Clasificación: tautología, contradicción, contingencia.</li><li>Relaciones (no operaciones): equivalencia lógica (≡) y consecuencia lógica (⇒).</li><li>Razonamiento deductivo válido: (P₁∧…∧Pₙ)→Q es tautología. Reglas de inferencia: Modus Ponens, Modus Tollens, Silogismo Hipotético, Silogismo Disyuntivo, Resolución, Conjunción, Disyunción, Simplificación.</li><li>Leyes lógicas (De Morgan, distributiva, absorción, etc.) permiten el método algebraico de equivalencias y de deducción, alternativa a la tabla de verdad.</li></ul></div>
+<h4 class="subtopic">Preguntas de repaso — Unidad 1</h4>
+<details class="repaso"><summary>¿Puede una proposición hablar de sí misma (p.ej. "esta proposición es falsa")?</summary><div class="ans">No: la paradoja del mentiroso muestra que una oración autorreferencial de ese tipo no puede recibir un valor de verdad único, y por lo tanto no es una proposición lógica según nuestra definición.</div></details>
+<details class="repaso"><summary>¿Cuándo es falso un condicional p → q?</summary><div class="ans">Únicamente cuando el antecedente p es verdadero y el consecuente q es falso; en todos los demás casos (incluido p falso) el condicional es verdadero.</div></details>
+<details class="repaso"><summary>¿Qué diferencia hay entre P ≡ Q (equivalencia) y P ⇒ Q (consecuencia lógica)?</summary><div class="ans">P≡Q exige que P y Q tengan siempre el mismo valor de verdad (P↔Q tautología). P⇒Q sólo exige que cuando P es verdadera, Q también lo sea; no dice nada sobre los casos en que P es falsa (P→Q tautología). Toda equivalencia implica consecuencia lógica en ambos sentidos, pero no toda consecuencia lógica es una equivalencia.</div></details>
+<details class="repaso"><summary>Si un razonamiento es válido y sus premisas son falsas, ¿qué puede decirse de la conclusión?</summary><div class="ans">Nada: la conclusión puede ser verdadera o falsa. La validez sólo garantiza que, SI las premisas fueran todas verdaderas, la conclusión también lo sería.</div></details>
+<details class="repaso"><summary>¿Cómo se relacionan un condicional y su contrarrecíproca?</summary><div class="ans">Son siempre lógicamente equivalentes (misma tabla de verdad); por eso demostrar p→q por su contrarrecíproca ~q→~p es una técnica de demostración válida y frecuente.</div></details>
+<footer class="unitend">— Fin de la Unidad 1 —</footer>
+<div class="unit-title" id="u2"><div class="k">Unidad 2</div><h2>Lógica de Predicados de Primer Orden</h2>
+<p class="unit-intro">La lógica proposicional (también llamada lógica de orden cero) trata las oraciones p, q, r,… como bloques indivisibles: no analiza su estructura interna. Pero razonamientos tan «razonables» como «Todos los hombres son mortales. Sócrates es un hombre. Por lo tanto, Sócrates es mortal» necesitan mirar <em>dentro</em> de la oración: su sujeto y su predicado. Ese es el objetivo de la lógica de predicados de primer orden (LP1O).</p></div>
+<h3 class="topic" id="u2-1">2.2. Función proposicional (predicado)</h3>
+<div class="box def"><div class="lbl">Definición</div>Una <strong>función proposicional</strong> (o predicado, o proposición abierta) es toda oración declarativa que asigna una propiedad P a objetos indeterminados x₁, x₂, …, xₙ (llamados <strong>variables</strong>), y que se convierte en proposición lógica al especificar esos objetos. Se denota P(x₁, x₂, …, xₙ).</div>
+<div class="box ex"><div class="lbl">Ejemplo</div>P(x): "x es un número par" no es una proposición (no sabemos qué es x), pero P(4): "4 es un número par" sí lo es (verdadera), y P(7): "7 es un número par" también (falsa). Este proceso de reemplazar la variable por un valor concreto se llama <strong>especialización</strong> o especificación.</div>
+<div class="box rel"><div class="lbl">Relación con otros temas</div>Una función proposicional con dos variables, como M(x,y): "x es mayor que y", requiere especializar <em>ambas</em> variables para transformarse en proposición; si sólo se especializa una, el resultado sigue siendo una función proposicional (ahora de una sola variable).</div>
+<div class="box def"><div class="lbl">Definición</div>El <strong>dominio</strong> o <strong>universo de discurso</strong> de una función proposicional P(x₁,…,xₙ) es la colección no vacía de objetos que pueden reemplazar a las variables, dándole sentido a la oración resultante (que sea verdadera o falsa).</div>
+<div class="box ex"><div class="lbl">Ejemplo</div>Para P(x): "x es un número par", el dominio natural es U=ℤ (los enteros): no tiene sentido preguntar si √2 o "manzana" son pares.</div>
+<h3 class="topic" id="u2-2">2.3. Cuantificadores y clases</h3>
+<div class="box def"><div class="lbl">Definición</div>Una <strong>clase o categoría</strong> es una colección de objetos de un universo de discurso que comparten una propiedad o característica común. Se denotan con mayúsculas A, B, C,… La <strong>clase vacía</strong> ∅ es aquella sin ningún miembro (es única, cualquiera sea el universo).</div>
+<p>Para transformar una función proposicional en proposición general (sin especializar un valor concreto) se usa la <strong>cuantificación</strong>: asociar la variable con «todos» o «algunos».</p>
+<table class="props"><tr><th>Símbolo</th><th>Nombre</th><th>Se lee</th></tr><tr><td>∀x</td><td>Cuantificador universal</td><td>para todo x se verifica que...</td></tr><tr><td>∃x</td><td>Cuantificador existencial</td><td>existe al menos un x tal que...</td></tr></table>
+<div class="box ex"><div class="lbl">Ejemplo</div>R(x,y): "x + y es par", en los enteros. ∀x ∃y R(x,y): "Para todo entero x existe un entero y tal que x+y es par" — VERDADERA (basta tomar y con la misma paridad que x). ∃x ∀y R(x,y): "Existe un entero x tal que, para todo entero y, x+y es par" — FALSA (ningún x fijo suma par con todos los y).</div>
+<div class="box err"><div class="lbl">Error frecuente</div>El orden de los cuantificadores <strong>importa</strong> cuando son de distinto tipo: ∀x∃y P(x,y) y ∃y∀x P(x,y) generalmente NO dicen lo mismo (el segundo es más fuerte: exige un único y que sirva para todos los x). Cuando los cuantificadores son del mismo tipo (∀x∀y o ∃x∃y) sí pueden intercambiarse sin problema.</div>
+<p>Cuando una variable está cuantificada, se dice <strong>ligada</strong>; si no tiene cuantificador ni valor asignado, es <strong>libre</strong>. Para que una función proposicional se convierta en proposición lógica, <em>todas</em> sus variables deben quedar especializadas o cuantificadas.</p>
+<h3 class="topic" id="u2-3">2.4. Proposiciones categóricas</h3>
+<p>Ya propuestas por Platón y Aristóteles, relacionan dos clases A y B, o un elemento con una clase.</p>
+<table class="props"><tr><th>Forma</th><th>Nombre</th><th>En símbolos</th></tr><tr><td>Todo miembro de A es miembro de B</td><td>Universal Afirmativa</td><td>∀x: x∈A → x∈B</td></tr><tr><td>Ningún miembro de A es miembro de B</td><td>Universal Negativa</td><td>∀x: x∈A → x∉B</td></tr><tr><td>Algunos miembros de A son miembros de B</td><td>Particular Afirmativa</td><td>∃x: x∈A ∧ x∈B</td></tr><tr><td>Algunos miembros de A no son miembros de B</td><td>Particular Negativa</td><td>∃x: x∈A ∧ x∉B</td></tr></table>
+<p>De la proposición universal afirmativa se desprende la relación de <strong>inclusión</strong> entre clases: A ⊆ B (A es subclase de B). La universal negativa dice que A y B son <strong>disjuntas</strong>. Este mismo álgebra se retoma formalmente, ya no para "clases" sino para "conjuntos", en la Unidad 4.</p>
+<div class="box ex"><div class="lbl">Ejemplo</div>«Todos los animales respiran»: universal afirmativa. Con A=clase de los animales y R=clase de lo que respira: ∀x: x∈A → x∈R.</div>
+<h3 class="topic" id="u2-4">2.5. Razonamiento con predicados</h3>
+<div class="box prop"><div class="lbl">Propiedad — Negación de cuantificadores</div>~[∀x: P(x)] ≡ ∃x: ~P(x) &nbsp;&nbsp;&nbsp; y &nbsp;&nbsp;&nbsp; ~[∃x: P(x)] ≡ ∀x: ~P(x)<br>Negar «para todos» da «existe uno que no», y negar «existe uno que» da «para todos no».</div>
+<div class="box ex"><div class="lbl">Ejemplo</div>Negar «Todos los alumnos aprobaron» (∀x: Aprobó(x)) da «Existe al menos un alumno que no aprobó» (∃x: ~Aprobó(x)) — NO «ningún alumno aprobó».</div>
+<div class="box prop"><div class="lbl">Propiedad / Teorema</div>Si ∀x: P(x) es verdadera, entonces ∃x: P(x) también lo es (la inversa no vale en general): ∀x:P(x) ⇒ ∃x:P(x).</div>
+<div class="box def"><div class="lbl">Definición</div>Dados dos predicados P(x) y Q(x) sobre el mismo dominio U: P(x) <strong>implica lógicamente</strong> a Q(x), P(x)⇒Q(x), si el condicional P(a)→Q(a) es verdadero para todo elemento a del dominio. Son <strong>lógicamente equivalentes</strong>, P(x)≡Q(x), si el bicondicional P(a)↔Q(a) es verdadero para todo a del dominio.</div>
+<table class="props"><tr><th>Regla</th><th>Enunciado</th></tr><tr><td>Especificación Universal</td><td>Si ∀x: P(x) es verdadera en un dominio D, entonces P(a) es verdadera para cada elemento a de D.</td></tr><tr><td>Generalización Universal</td><td>Si P(x) es verdadera al reemplazar x por un elemento c cualquiera (arbitrario) del dominio D, entonces ∀x: P(x) es verdadera en D.</td></tr></table>
+<div class="box ex"><div class="lbl">Ejemplo</div>Premisas: ∀x: Perro(x)→Animal(x); ∀x: Animal(x)→Respira(x). Conclusión: ∀x: Perro(x)→Respira(x).<br>1) Perro(c)→Animal(c) — de la 1ª premisa, Especificación Universal (c arbitrario).<br>2) Animal(c)→Respira(c) — de la 2ª premisa, Especificación Universal.<br>3) Perro(c)→Respira(c) — de 1) y 2), Silogismo Hipotético.<br>4) ∀x: Perro(x)→Respira(x) — de 3), Generalización Universal. ∎</div>
+<div class="box err"><div class="lbl">Error frecuente</div>La Generalización Universal sólo es válida si "c" se tomó de manera <em>completamente arbitraria</em> (no se le asumió ninguna propiedad especial); de lo contrario la conclusión general no está justificada.</div>
+<div class="unit-summary"><h4>Resumen de la Unidad 2</h4><ul><li><strong>Función proposicional</strong> P(x₁,…,xₙ): se convierte en proposición por <strong>especialización</strong> (asignar valores) o por <strong>cuantificación</strong> (∀, ∃).</li><li><strong>Dominio o universo de discurso</strong>: colección de objetos válidos para las variables.</li><li><strong>Clase o categoría</strong>: objetos del dominio que verifican un predicado.</li><li>4 <strong>proposiciones categóricas</strong>: universal/particular, afirmativa/negativa.</li><li>De Morgan para cuantificadores: ~∀x P(x) ≡ ∃x ~P(x); ~∃x P(x) ≡ ∀x ~P(x).</li><li>2 reglas de inferencia nuevas: Especificación Universal y Generalización Universal, que se suman a las de la Unidad 1 para razonar con predicados.</li></ul></div>
+<h4 class="subtopic">Preguntas de repaso — Unidad 2</h4>
+<details class="repaso"><summary>¿Qué nombre recibe el conjunto de valores válidos para las variables de una función proposicional?</summary><div class="ans">Dominio o universo de discurso.</div></details>
+<details class="repaso"><summary>¿Cómo se llama la proposición categórica que establece que A y B son disjuntos?</summary><div class="ans">Universal negativa: ∀x: x∈A → x∉B ("ningún miembro de A es miembro de B").</div></details>
+<details class="repaso"><summary>¿Cuál es la negación de ∃x: F(x)?</summary><div class="ans">∀x: ~F(x) — "para todo x, no se verifica F(x)".</div></details>
+<details class="repaso"><summary>¿En qué se diferencia la Especificación Universal de la Generalización Universal?</summary><div class="ans">La Especificación Universal va de lo general (∀x P(x) verdadero) a un caso particular (P(a) verdadero). La Generalización Universal va en sentido inverso: de un caso arbitrario (P(c) verdadero, con c cualquiera) a la conclusión general (∀x P(x) verdadero) — pero sólo es válida si c se eligió sin ninguna suposición adicional.</div></details>
+<footer class="unitend">— Fin de la Unidad 2 —</footer>
+<div class="unit-title" id="u3"><div class="k">Unidad 3</div><h2>Inducción Matemática</h2>
+<p class="unit-intro">El razonamiento <strong>deductivo</strong> (Unidad 1) trabaja de lo general a lo particular: aplica un esquema válido a un caso concreto. El razonamiento <strong>inductivo</strong> hace el camino inverso: observa varios casos particulares, detecta un patrón, y propone una fórmula general. El problema es que la sola inspección de casos particulares nunca <em>demuestra</em> que el patrón vale siempre. La <strong>inducción matemática</strong> es el método riguroso que permite demostrar, con total certeza, una propiedad para <em>todos</em> los números naturales (un conjunto infinito) revisando sólo un número finito de pasos.</p></div>
+<h3 class="topic" id="u3-1">3.2. Sucesiones y series</h3>
+<div class="box def"><div class="lbl">Definición</div>Una <strong>sucesión</strong> es una lista ordenada de elementos, llamados <strong>términos</strong>: a₁, a₂, a₃, …, aₙ. Formalmente es una función cuyo dominio es un subconjunto de los naturales. Si existe una fórmula aₖ = f(k) que da el valor del término en función de su posición k, se dice que es el <strong>término general</strong> de la sucesión.</div>
+<div class="box ex"><div class="lbl">Ejemplo</div>1, 3, 5, 7, 9, … → aₖ = 2k − 1 (también recursivamente: a₁=1, aₖ = aₖ₋₁ + 2). Sucesión de Fibonacci: 1, 1, 2, 3, 5, 8, 13, … → a₁=1, a₂=1, aₖ = aₖ₋₁ + aₖ₋₂.</div>
+<div class="box def"><div class="lbl">Definición</div>Una <strong>serie</strong> es la suma parcial de los k primeros términos de una sucesión, denotada con notación sigma: Sₖ = Σᵢ₌₁ᵏ aᵢ = a₁ + a₂ + … + aₖ.</div>
+<div class="box ex"><div class="lbl">Ejemplo</div>Para aₖ = k: S₁=1, S₂=1+2=3, S₃=1+2+3=6, S₄=1+2+3+4=10. Buscando el patrón se llega a la fórmula Sₖ = k(k+1)/2 — la célebre fórmula de Gauss. Pero, ¿cómo estar <em>seguros</em> de que vale para cualquier k? Ese es exactamente el problema que resuelve la inducción matemática.</div>
+<h3 class="topic" id="u3-2">3.3. Principio de Inducción Matemática</h3>
+<p>La inducción se apoya en tres propiedades axiomáticas de los números naturales (parte de los axiomas de Peano, 1885):</p>
+<ol><li>0 es un número natural.</li><li>Si a es un número natural, el siguiente a+1 también es un número natural.</li><li><strong>Principio del Buen Orden:</strong> cualquier subconjunto no vacío de números naturales tiene un elemento mínimo.</li></ol>
+<div class="box def"><div class="lbl">Teorema — Principio de Inducción Matemática</div>Una función proposicional F(n) referida a los naturales es verdadera para todo natural n ≥ n₀ si se cumplen dos condiciones:<br><br><strong>Base Inductiva:</strong> F(n₀) es verdadera para algún natural n₀ (habitualmente 0 o 1).<br><strong>Paso Inductivo:</strong> la verdad de F(k) para cualquier natural k ≥ n₀ (llamada <strong>Hipótesis Inductiva</strong>, HI) implica lógicamente la verdad de F(k+1).</div>
+<div class="box rel"><div class="lbl">Relación con otros temas</div>La justificación del método es, precisamente, una cadena de Modus Ponens (Unidad 1): si F(n₀) es verdadera y F(n₀)→F(n₀+1) también, entonces F(n₀+1) es verdadera; y así sucesivamente para todo n.</div>
+<ol><li><strong>Base Inductiva:</strong> demostrar que F(n₀) es verdadera para el primer natural n₀ del enunciado.</li><li><strong>Hipótesis Inductiva (HI):</strong> suponer que F(k) es verdadera, para un k ≥ n₀ arbitrario.</li><li><strong>Paso Inductivo:</strong> demostrar, usando la HI, que F(k+1) es también verdadera.</li><li>Concluir: por el Principio de Inducción, F(n) es verdadera para todo n ≥ n₀.</li></ol>
+<div class="box ex"><div class="lbl">Ejemplo</div><strong>Demostrar S(n): 1+2+3+…+n = n(n+1)/2, para todo n ≥ 1.</strong><br><br><u>Base Inductiva</u> (n₀=1): S(1): 1 = 1·(1+1)/2 = 2/2 = 1. Se cumple.<br><br><u>Hipótesis Inductiva</u>: suponemos verdadera para n=k: 1+2+…+k = k(k+1)/2.<br><br><u>Paso Inductivo</u>: hay que probar para n=k+1: 1+2+…+k+(k+1) = (k+1)(k+2)/2.<br>1+2+…+k+(k+1) = [k(k+1)/2] + (k+1) &nbsp;(por HI)<br>&nbsp;&nbsp;= [k(k+1) + 2(k+1)] / 2 &nbsp;(denominador común)<br>&nbsp;&nbsp;= (k+1)(k+2) / 2 &nbsp;(factor común k+1)<br>Que es exactamente lo que había que probar. Por inducción, S(n) es verdadera ∀n≥1. ∎</div>
+<div class="box err"><div class="lbl">Error frecuente</div><strong>Las DOS condiciones son obligatorias.</strong> Puede demostrarse un paso inductivo perfectamente correcto para una fórmula falsa, si la base inductiva no se verifica para ningún natural — en ese caso la proposición NO es válida para ningún n. Ejemplo: S(n): 1+2+…+n = (n²+n+2)/2 tiene un paso inductivo demostrable, pero S(1), S(2), S(3)… nunca se cumplen: la fórmula es falsa para todo n. Por eso nunca se debe "saltear" la verificación de la base.</div>
+<div class="box ex"><div class="lbl">Ejemplo</div><strong>¿Para qué naturales vale S(n): 2ⁿ &gt; n²?</strong> Probando: n=0 (1&gt;0 ✓), n=1 (2&gt;1 ✓), n=2 (4=4 ✗), n=3 (8&lt;9 ✗), n=4 (16=16 ✗), n=5 (32&gt;25 ✓), n=6, n=7… ✓. La propiedad falla para 2, 3 y 4, pero parece retomar desde 5. Se toma entonces n₀=5 como base y se demuestra el paso inductivo para k≥5. La inducción no siempre arranca en 0 o 1: el n₀ correcto se busca probando casos.</div>
+<div class="box ex"><div class="lbl">Ejemplo</div><strong>Inducción "geométrica" — tablero de ajedrez fallado:</strong> un tablero cuadrado de 2ⁿ×2ⁿ−1 casillas (le falta una) siempre puede cubrirse con fichas triminós en forma de L. Base (n=1): tablero de 2×2−1=3 casillas, se cubre con una sola ficha. Paso inductivo: un tablero de 2^(k+1) de lado se divide en 4 tableros de 2ᵏ de lado; se coloca una ficha triminó en el centro tocando a los tres cuadrantes que no tienen la casilla faltante, dejando fallado exactamente un cuadrante en cada uno de los 4 — y por Hipótesis Inductiva, cada uno de esos 4 tableros menores ya sabemos que puede cubrirse. Este ejemplo muestra que la inducción no se limita a fórmulas de sumas: sirve para demostrar cualquier propiedad indexada en los naturales.</div>
+<div class="unit-summary"><h4>Resumen de la Unidad 3</h4><ul><li><strong>Inducción</strong>: razonar de lo particular a lo general, a partir de un patrón observado.</li><li>Se basa en 3 propiedades axiomáticas de ℕ (Peano) — en particular el Principio del Buen Orden.</li><li>Principio de Inducción Matemática: <strong>Base Inductiva</strong> + <strong>Paso Inductivo</strong> (que usa la <strong>Hipótesis Inductiva</strong>) ⟹ F(n) verdadera ∀n≥n₀.</li><li>Las dos condiciones son necesarias: un paso inductivo válido sin base válida no prueba nada.</li><li>El n₀ de arranque no siempre es 0 ó 1: a veces hay que probar varios casos para encontrarlo.</li></ul></div>
+<h4 class="subtopic">Preguntas de repaso — Unidad 3</h4>
+<details class="repaso"><summary>¿Qué dos cosas hay que demostrar para aplicar el Principio de Inducción Matemática?</summary><div class="ans">La Base Inductiva (F(n₀) verdadera para algún natural n₀) y el Paso Inductivo (si F(k) es verdadera —Hipótesis Inductiva— entonces F(k+1) también lo es, para cualquier k≥n₀).</div></details>
+<details class="repaso"><summary>¿Es suficiente demostrar sólo el paso inductivo para concluir que una fórmula es válida?</summary><div class="ans">No. Si la base inductiva no puede probarse para ningún natural, la fórmula puede ser falsa para todo n aunque el paso inductivo sea perfectamente correcto.</div></details>
+<details class="repaso"><summary>¿El número inicial n₀ de la inducción siempre es 0 o 1?</summary><div class="ans">No necesariamente: se elige el primer natural para el cual la propiedad efectivamente se cumple, lo que a veces exige probar varios valores antes de encontrarlo (por ejemplo n₀=5 para 2ⁿ&gt;n²).</div></details>
+<footer class="unitend">— Fin de la Unidad 3 —</footer>
+<div class="unit-title" id="u4"><div class="k">Unidad 4</div><h2>Conjuntos</h2>
+<p class="unit-intro">Nota: de la Unidad 4 completa (que en el programa de la cátedra también incluye análisis combinatorio), este material desarrolla exclusivamente el tema <strong>Conjuntos</strong>, que es lo que corresponde evaluar según lo indicado.</p>
+<p class="unit-intro">La teoría de conjuntos —obra fundamentalmente del alemán Georg Cantor— es uno de los pilares de la matemática moderna. Nace como una aplicación de la lógica: "hacer lógica" pero para hablar de colecciones de objetos. Cada relación y operación entre conjuntos que sigue tiene un conectivo lógico correspondiente en la Unidad 1, del cual hereda directamente sus propiedades.</p></div>
+<h3 class="topic" id="u4-1">4.1–4.2. Concepto, notación y determinación de un conjunto</h3>
+<div class="box def"><div class="lbl">Definición</div>Un <strong>conjunto</strong> es una colección bien definida de objetos distintos, llamados sus <strong>elementos</strong>. Se denotan con letras mayúsculas (A, B, C…); sus elementos, con minúsculas (a, b, c…). El orden de presentación y la repetición de elementos NO alteran al conjunto: {a,e,i,i,o,u} y {u,i,e,o,a} son el mismo conjunto.</div>
+<table class="props"><tr><th>Símbolo</th><th>Significado</th></tr><tr><td>a ∈ A</td><td>el elemento a pertenece al conjunto A</td></tr><tr><td>b ∉ A</td><td>el elemento b no pertenece al conjunto A</td></tr></table>
+<div class="box def"><div class="lbl">Definición</div><strong>Por extensión (o enumeración):</strong> se listan todos los elementos entre llaves. V = {a, e, i, o, u}.<br><br><strong>Por comprensión (o propiedad):</strong> se enuncia una propiedad P(x) que cumplen exactamente los elementos del conjunto. V = {x / P(x)}, donde P(x): "x es una vocal española".</div>
+<div class="box ex"><div class="lbl">Ejemplo</div>El conjunto de los naturales pares mayores que 10 y menores que 100, por comprensión:<br>P = {x / x∈ℕ ∧ (∃n∈ℕ / x=2n) ∧ x&gt;10 ∧ x&lt;100}</div>
+<div class="box rel"><div class="lbl">Relación con otros temas</div>La definición por comprensión es, literalmente, una función proposicional cuantificada (Unidad 2): V = {x / P(x)} donde P(x) es un predicado.</div>
+<table class="props"><tr><th>Conjunto</th><th>Notación</th><th>Definición</th></tr><tr><td>Vacío</td><td>∅ = { }</td><td>No contiene ningún elemento. Se lo puede definir por comprensión con cualquier propiedad imposible: ∅ = {x / x≠x}.</td></tr><tr><td>Unitario</td><td>{a}</td><td>Contiene exactamente un elemento.</td></tr><tr><td>Universal</td><td>U</td><td>Contiene a todos los elementos de los conjuntos bajo estudio (el universo de discurso).</td></tr><tr><td>Naturales</td><td>ℕ = {x / x es natural} = {0,1,2,3,…}</td><td></td></tr><tr><td>Enteros</td><td>ℤ = {…,-2,-1,0,1,2,…}</td><td></td></tr><tr><td>Racionales</td><td>ℚ</td><td></td></tr><tr><td>Reales</td><td>ℝ</td><td></td></tr></table>
+<p>Herramienta gráfica intuitiva: un rectángulo representa el conjunto universal U; líneas cerradas representan conjuntos; puntos etiquetados representan elementos.</p>
+<svg class="venn" viewBox="0 0 260 170" xmlns="http://www.w3.org/2000/svg"><defs><clipPath id="cAintro"><circle cx="100" cy="85" r="60"/></clipPath><clipPath id="cBintro"><circle cx="160" cy="85" r="60"/></clipPath></defs><rect x="4" y="4" width="252" height="162" fill="none" stroke="#8a8570" stroke-width="1.4"/><text x="14" y="22" font-size="13" fill="#4a5049" font-family="Georgia,serif">U</text><circle cx="100" cy="85" r="60" fill="none" stroke="#152238" stroke-width="2"/><circle cx="160" cy="85" r="60" fill="none" stroke="#152238" stroke-width="2"/><text x="78" y="55" font-size="15" fill="#152238" font-family="Georgia,serif">A</text><text x="178" y="55" font-size="15" fill="#152238" font-family="Georgia,serif">B</text></svg>
+<p style="text-align:center; color:var(--ink-soft); font-size:14px;">U = {a,e,i,o,u,n,p}, con el conjunto V={a,e,i,o,u} incluido en U.</p>
+<div class="box def"><div class="lbl">Definición</div>La <strong>cardinalidad</strong> de A, denotada |A|, es la cantidad de elementos que lo conforman. Por convención, |∅| = 0. Si |A| es un número natural, A es <strong>finito</strong>; en caso contrario es <strong>infinito</strong>.</div>
+<p>Dentro de los infinitos hay una distinción más fina: un conjunto es <strong>contable (enumerable)</strong> si sus elementos pueden ordenarse en una lista 1º, 2º, 3º,… sin que se "escape" ninguno (como ℕ o ℤ); si no existe tal ordenamiento, es <strong>no contable</strong> (como ℝ).</p>
+<h3 class="topic" id="u4-2">4.3. Relaciones entre conjuntos</h3>
+<div class="box def"><div class="lbl">Definición</div>A = B si y sólo si ambos están formados por exactamente los mismos elementos. En símbolos: A = B ⟺ (∀x: x∈A → x∈B) ∧ (∀x: x∈B → x∈A).</div>
+<p>Propiedades: <strong>reflexiva</strong> (A=A), <strong>simétrica</strong> (A=B ⟹ B=A), <strong>transitiva</strong> (A=B ∧ B=C ⟹ A=C).</p>
+<div class="box def"><div class="lbl">Definición</div>A está <strong>incluido</strong> en B, A ⊆ B, si todo elemento de A es también elemento de B: A ⊆ B ⟺ ∀x: x∈A → x∈B. Equivalente a decir «A es subconjunto de B», «B incluye a A», «B es superconjunto de A».</div>
+<div class="box prop"><div class="lbl">Propiedad / Teorema</div>Propiedades de la inclusión (todas demostrables): <strong>reflexiva</strong> (A⊆A); <strong>transitiva</strong> (A⊆B ∧ B⊆C ⟹ A⊆C); <strong>antisimétrica</strong> (A⊆B ∧ B⊆A ⟹ A=B); <strong>el vacío siempre está presente</strong> (∅⊆A, para cualquier A); <strong>unicidad del vacío</strong> (sólo existe un conjunto vacío); si A y B son finitos y A⊆B entonces |A|≤|B|.</div>
+<div class="box ex"><div class="lbl">Ejemplo</div><u>Demostración de "∅ ⊆ A" (vacío siempre presente):</u> por definición, ∅⊆A ⟺ ∀x: x∈∅ → x∈A. Como "x∈∅" es siempre FALSO, el condicional con antecedente falso es siempre VERDADERO, cualquiera sea A. Queda demostrado. ∎ (Esta es una aplicación directa de la tabla de verdad del condicional, Unidad 1.)</div>
+<div class="box def"><div class="lbl">Definición</div>A está <strong>estrictamente incluido</strong> en B, A ⊂ B, si A ⊆ B pero existe al menos un elemento de B que no pertenece a A. En símbolos: A ⊂ B ⟺ (∀x: x∈A → x∈B) ∧ (∃y / y∈B ∧ y∉A). En ese caso A es <strong>subconjunto propio</strong> de B.</div>
+<div class="box err"><div class="lbl">Error frecuente</div>Para conjuntos <em>finitos</em>, A⊂B implica |A|&lt;|B|. Pero esto NO vale para conjuntos infinitos: el conjunto de los naturales pares está estrictamente incluido en ℕ, y sin embargo ambos son infinitos contables — tienen "la misma cantidad" (infinita) de elementos.</div>
+<svg class="venn" viewBox="0 0 260 170" xmlns="http://www.w3.org/2000/svg"><defs><clipPath id="cAincl"><circle cx="100" cy="85" r="60"/></clipPath><clipPath id="cBincl"><circle cx="160" cy="85" r="60"/></clipPath></defs><rect x="4" y="4" width="252" height="162" fill="none" stroke="#8a8570" stroke-width="1.4"/><text x="14" y="22" font-size="13" fill="#4a5049" font-family="Georgia,serif">U</text><circle cx="100" cy="85" r="60" fill="#d9b978" fill-opacity=".55" clip-path="url(#cBincl)"/><circle cx="100" cy="85" r="60" fill="none" stroke="#152238" stroke-width="2"/><circle cx="160" cy="85" r="60" fill="none" stroke="#152238" stroke-width="2"/><text x="78" y="55" font-size="15" fill="#152238" font-family="Georgia,serif">A</text><text x="178" y="55" font-size="15" fill="#152238" font-family="Georgia,serif">B</text></svg>
+<p style="text-align:center; color:var(--ink-soft); font-size:14px;">A = {a,b} ⊂ B = {a,b,c}: todo elemento de A está en B, y c∈B no pertenece a A.</p>
+<h3 class="topic" id="u4-3">4.4. Operaciones con conjuntos</h3>
+<p>Mientras que las relaciones (igualdad, inclusión) comparan conjuntos sin crear uno nuevo, las <strong>operaciones</strong> sí generan un conjunto nuevo a partir de otros. Cada una corresponde, elemento a elemento, a un conectivo lógico de la Unidad 1 aplicado a la proposición de pertenencia.</p>
+<div class="box def"><div class="lbl">Definición</div>El <strong>complemento (absoluto)</strong> de A respecto del universal U, ~A (también A̅ o Aᶜ), es el conjunto de todos los elementos del universal que NO pertenecen a A: ~A = {x / x∈U ∧ x∉A}. Corresponde a la negación lógica ~(x∈A).</div>
+<svg class="venn" viewBox="0 0 260 170" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="252" height="162" fill="#d9b978" fill-opacity=".55" stroke="#8a8570" stroke-width="1.4"/><circle cx="130" cy="85" r="55" fill="#faf9f6" stroke="#152238" stroke-width="2"/><text x="14" y="22" font-size="13" fill="#4a5049" font-family="Georgia,serif">U</text><text x="122" y="90" font-size="15" fill="#152238" font-family="Georgia,serif">A</text></svg>
+<div class="box def"><div class="lbl">Definición — Complemento relativo / Diferencia</div>El <strong>complemento de A respecto de B</strong> (o diferencia B−A) es el conjunto de todos los elementos de B que no pertenecen a A: B − A = {x / x∈B ∧ x∉A}.</div>
+<div class="box ex"><div class="lbl">Ejemplo</div>A={a,b,c}, B={c,x}. B−A = {x} (lo de B que no está en A). A−B = {a,b} (lo de A que no está en B). Nótese que B−A ≠ A−B: <strong>la diferencia de conjuntos no es conmutativa</strong>.</div>
+<svg class="venn" viewBox="0 0 260 170" xmlns="http://www.w3.org/2000/svg"><defs><clipPath id="cAdiffA"><circle cx="100" cy="85" r="60"/></clipPath><clipPath id="cBdiffA"><circle cx="160" cy="85" r="60"/></clipPath></defs><rect x="4" y="4" width="252" height="162" fill="none" stroke="#8a8570" stroke-width="1.4"/><text x="14" y="22" font-size="13" fill="#4a5049" font-family="Georgia,serif">U</text><circle cx="100" cy="85" r="60" fill="#d9b978" fill-opacity=".55"/><circle cx="160" cy="85" r="60" fill="#faf9f6" clip-path="url(#cAdiffA)"/><circle cx="100" cy="85" r="60" fill="none" stroke="#152238" stroke-width="2"/><circle cx="160" cy="85" r="60" fill="none" stroke="#152238" stroke-width="2"/><text x="78" y="55" font-size="15" fill="#152238" font-family="Georgia,serif">A</text><text x="178" y="55" font-size="15" fill="#152238" font-family="Georgia,serif">B</text></svg>
+<div class="box def"><div class="lbl">Definición</div>La <strong>intersección</strong> de A y B, A ∩ B, es el conjunto de los elementos comunes a ambos: A ∩ B = {x / x∈A ∧ x∈B}. Corresponde a la conjunción lógica ∧ (el símbolo ∩ es, de hecho, la forma suavizada de ∧).</div>
+<svg class="venn" viewBox="0 0 260 170" xmlns="http://www.w3.org/2000/svg"><defs><clipPath id="cAinter"><circle cx="100" cy="85" r="60"/></clipPath><clipPath id="cBinter"><circle cx="160" cy="85" r="60"/></clipPath></defs><rect x="4" y="4" width="252" height="162" fill="none" stroke="#8a8570" stroke-width="1.4"/><text x="14" y="22" font-size="13" fill="#4a5049" font-family="Georgia,serif">U</text><circle cx="100" cy="85" r="60" fill="#d9b978" fill-opacity=".55" clip-path="url(#cBinter)"/><circle cx="100" cy="85" r="60" fill="none" stroke="#152238" stroke-width="2"/><circle cx="160" cy="85" r="60" fill="none" stroke="#152238" stroke-width="2"/><text x="78" y="55" font-size="15" fill="#152238" font-family="Georgia,serif">A</text><text x="178" y="55" font-size="15" fill="#152238" font-family="Georgia,serif">B</text></svg>
+<div class="box ex"><div class="lbl">Ejemplo</div>A={1,2,3,4,6,7,8,9}, B={5,6,7,8,10} → A ∩ B = {6,7,8}.</div>
+<p>Casos posibles entre A y B respecto de la intersección: si no comparten elementos, son <strong>disjuntos</strong> y A∩B=∅; si comparten algunos, A∩B es el área común; si son iguales, A∩B=A=B; si uno es subconjunto propio del otro, A∩B es el subconjunto de menor cardinalidad.</p>
+<div class="box ex"><div class="lbl">Ejemplo</div><u>Demostración de la asociatividad de ∩</u> (por método algebraico, usando la conjunción lógica): (A∩B)∩C = {x/(x∈A∧x∈B)∧x∈C} = {x/x∈A∧(x∈B∧x∈C)} (asociativa de ∧) = A∩(B∩C). ∎</div>
+<div class="box def"><div class="lbl">Definición</div>La <strong>unión</strong> de A y B, A ∪ B, es el conjunto de todos los elementos que pertenecen a A, a B, o a ambos: A ∪ B = {x / x∈A ∨ x∈B}. Corresponde a la disyunción lógica ∨ (∪ es la forma suavizada de ∨).</div>
+<svg class="venn" viewBox="0 0 260 170" xmlns="http://www.w3.org/2000/svg"><defs><clipPath id="cAunionex"><circle cx="100" cy="85" r="60"/></clipPath><clipPath id="cBunionex"><circle cx="160" cy="85" r="60"/></clipPath></defs><rect x="4" y="4" width="252" height="162" fill="none" stroke="#8a8570" stroke-width="1.4"/><text x="14" y="22" font-size="13" fill="#4a5049" font-family="Georgia,serif">U</text><circle cx="100" cy="85" r="60" fill="#d9b978" fill-opacity=".55"/><circle cx="160" cy="85" r="60" fill="#d9b978" fill-opacity=".55"/><circle cx="100" cy="85" r="60" fill="none" stroke="#152238" stroke-width="2"/><circle cx="160" cy="85" r="60" fill="none" stroke="#152238" stroke-width="2"/><text x="78" y="55" font-size="15" fill="#152238" font-family="Georgia,serif">A</text><text x="178" y="55" font-size="15" fill="#152238" font-family="Georgia,serif">B</text></svg>
+<div class="box ex"><div class="lbl">Ejemplo</div>A={1,2,3,4,6,7,8,9}, B={5,6,7,8,10} → A ∪ B = {1,2,3,4,5,6,7,8,9,10} (los repetidos no se listan dos veces).</div>
+<p>Por su correspondencia directa con los conectivos lógicos, las propiedades de conjuntos son, símbolo a símbolo, un espejo de las leyes lógicas de la Unidad 1 (∧↔∩, ∨↔∪, ~↔~, V₀↔U, F₀↔∅).</p>
+<table class="props"><tr><th>Ley</th><th>De la intersección</th><th>De la unión</th></tr><tr><td>Involución</td><td colspan="2">~(~A) = A</td></tr><tr><td>Idempotencia</td><td>A ∩ A = A</td><td>A ∪ A = A</td></tr><tr><td>Conmutativa</td><td>A ∩ B = B ∩ A</td><td>A ∪ B = B ∪ A</td></tr><tr><td>Asociativa</td><td>(A∩B)∩C = A∩(B∩C)</td><td>(A∪B)∪C = A∪(B∪C)</td></tr><tr><td>Distributiva</td><td>A∩(B∪C) = (A∩B)∪(A∩C)</td><td>A∪(B∩C) = (A∪B)∩(A∪C)</td></tr><tr><td>De Morgan</td><td>~(A∩B) = ~A∪~B</td><td>~(A∪B) = ~A∩~B</td></tr><tr><td>Neutro</td><td>A ∩ U = A</td><td>A ∪ ∅ = A</td></tr><tr><td>Complemento</td><td>A ∩ ~A = ∅ &nbsp;·&nbsp; ~U = ∅</td><td>A ∪ ~A = U &nbsp;·&nbsp; ~∅ = U</td></tr><tr><td>Acotación (dominación)</td><td>A ∩ ∅ = ∅</td><td>A ∪ U = U</td></tr><tr><td>Absorción</td><td>A ∩ (A∪B) = A</td><td>A ∪ (A∩B) = A</td></tr></table>
+<div class="box prop"><div class="lbl">Propiedad / Teorema</div><strong>Principio de Dualidad:</strong> en cualquier teorema del álgebra de conjuntos que use U, ∅, ∩ y ∪, si se intercambian simultáneamente U↔∅ y ∩↔∪, el resultado (el "dual") es también un teorema válido.</div>
+<div class="box err"><div class="lbl">Error frecuente</div>Estas leyes <strong>no son las mismas</strong> que rigen la suma y el producto de números — no debe asumirse, por ejemplo, ninguna "distributiva de la suma sobre el producto" análoga fuera de este contexto de conjuntos. Cada ley debe aplicarse tal como está enunciada aquí.</div>
+<h3 class="topic" id="u4-4">4.5. Familias de conjuntos</h3>
+<div class="box def"><div class="lbl">Definición</div>Una <strong>familia de conjuntos</strong> es una colección L = {A₁, A₂, …, Aₙ} cuyos elementos son, a su vez, conjuntos.</div>
+<div class="box def"><div class="lbl">Definición</div>El <strong>conjunto potencia</strong> de A, P(A) o 2^A, es la familia formada por TODOS los subconjuntos de A (incluidos ∅ y el propio A): P(A) = {X / X ⊆ A}. Si |A|=n, entonces |P(A)| = 2ⁿ.</div>
+<div class="box ex"><div class="lbl">Ejemplo</div>A = {a,b,c} → P(A) = {∅, {a}, {b}, {c}, {a,b}, {a,c}, {b,c}, {a,b,c}}. |A|=3, |P(A)|=2³=8.</div>
+<div class="box def"><div class="lbl">Definición</div>L = {A₁, A₂, …, Aₙ} es una <strong>partición</strong> de B si se cumplen las tres condiciones: (a) ningún Aᵢ es vacío; (b) los Aᵢ son disjuntos dos a dos (Aᵢ∩Aⱼ=∅ para i≠j); (c) la unión de todos los Aᵢ es exactamente B (A₁∪A₂∪…∪Aₙ=B). Informalmente: armar una partición es como armar un rompecabezas de B con las piezas Aᵢ.</div>
+<div class="box ex"><div class="lbl">Ejemplo</div>¿Es L={{1,2},{2,3},{4}} una partición de A={1,2,3,4}? NO: {1,2}∩{2,3}={2}≠∅, falla la condición de disjunción de a pares (aunque la unión sí da A). — En cambio L₁={{a,e,i,o},{u}} SÍ es una partición de V={a,e,i,o,u}: ambos subconjuntos son no vacíos, disjuntos, y su unión reconstruye V.</div>
+<div class="box def"><div class="lbl">Definición</div>Un <strong>par ordenado</strong> (a,b) es un arreglo en el que el orden SÍ importa: en general (a,b)≠(b,a), salvo que a=b. Dos pares son iguales sólo si coinciden componente a componente: (a,b)=(c,d) ⟺ a=c ∧ b=d.</div>
+<div class="box def"><div class="lbl">Definición</div>El <strong>producto cartesiano</strong> de A y B, A × B, es el conjunto de todos los pares ordenados con primera componente en A y segunda en B: A × B = {(a,b) / a∈A ∧ b∈B}.</div>
+<div class="box ex"><div class="lbl">Ejemplo</div>A={1,2,3}, B={a,b} → A × B = {(1,a),(1,b),(2,a),(2,b),(3,a),(3,b)}, con |A×B|=6=|A|·|B|.</div>
+<div class="box err"><div class="lbl">Error frecuente</div>El producto cartesiano <strong>no es conmutativo</strong>: A×B ≠ B×A en general, porque el orden de las componentes del par importa (a diferencia de {a,b}={b,a} como conjunto).</div>
+<h3 class="topic" id="u4-5">4.6. Multiconjuntos</h3>
+<div class="box def"><div class="lbl">Definición</div>Un <strong>multiconjunto</strong> es una colección bien definida de objetos que NO son todos necesariamente distintos: la repetición de elementos sí es significativa. La <strong>multiplicidad</strong> de un elemento es la cantidad de veces que aparece.</div>
+<div class="box ex"><div class="lbl">Ejemplo</div>El multiconjunto A={1,1,2,4,4,4} tiene: el elemento 1 con multiplicidad 2, el 2 con multiplicidad 1, el 4 con multiplicidad 3. Su cardinalidad es la suma de multiplicidades: |A|=6. Un conjunto ordinario es, en este marco, un caso particular de multiconjunto donde todo elemento tiene multiplicidad 1 (o 0, si no pertenece).</div>
+<div class="unit-summary"><h4>Resumen de la Unidad 4 — Conjuntos</h4><ul><li><strong>Conjunto</strong>: colección bien definida de objetos distintos, sin orden ni repetición.</li><li>Se determina por <strong>extensión</strong> (enumerando) o por <strong>comprensión</strong> (propiedad).</li><li>Especiales: universal U, vacío ∅, unitario, ℕ/ℤ/ℚ/ℝ. Cardinalidad |A|: finita o infinita.</li><li>Relaciones: <strong>igualdad</strong> (A=B), <strong>inclusión amplia</strong> (A⊆B), <strong>inclusión estricta</strong> (A⊂B). Propiedades: reflexiva, simétrica/antisimétrica, transitiva, vacío siempre incluido y único.</li><li>Operaciones: <strong>complemento</strong> ~A (absoluto) y B−A (relativo), <strong>intersección</strong> ∩ (↔∧), <strong>unión</strong> ∪ (↔∨). Leyes: idempotencia, conmutativa, asociativa, distributiva, De Morgan, neutro, complemento, acotación, absorción, dualidad — espejo exacto de las leyes lógicas.</li><li>Familias: <strong>conjunto potencia</strong> P(A) (2ⁿ subconjuntos), <strong>partición</strong> (no vacíos + disjuntos a pares + unión total), <strong>par ordenado</strong> y <strong>producto cartesiano</strong> A×B (no conmutativo).</li><li><strong>Multiconjunto</strong>: colección donde la repetición de elementos sí importa (multiplicidad).</li></ul></div>
+<h4 class="subtopic">Preguntas de repaso — Unidad 4</h4>
+<details class="repaso"><summary>¿Todo elemento de A es también elemento de B: cómo se llama esta relación y cómo se denota?</summary><div class="ans">Inclusión (amplia): A ⊆ B.</div></details>
+<details class="repaso"><summary>¿Existe un conjunto que sea subconjunto de cualquier otro? ¿Cuál es y qué propiedad lo garantiza?</summary><div class="ans">Sí, el conjunto vacío ∅. La propiedad "vacío siempre presente" garantiza que ∅⊆A para cualquier conjunto A, porque el condicional que define la inclusión tiene antecedente siempre falso.</div></details>
+<details class="repaso"><summary>¿Cuántos conjuntos vacíos existen?</summary><div class="ans">Uno solo: la propiedad de "unicidad del vacío" (demostrada usando la propiedad antisimétrica de la inclusión) garantiza que sólo hay un conjunto sin elementos.</div></details>
+<details class="repaso"><summary>¿Cómo se llama el conjunto formado por todos los subconjuntos de A, y cuántos elementos tiene si |A|=n?</summary><div class="ans">Conjunto potencia, P(A); tiene 2ⁿ elementos.</div></details>
+<details class="repaso"><summary>¿Qué tres condiciones debe cumplir una familia de conjuntos para ser una partición de B?</summary><div class="ans">Que ningún conjunto de la familia sea vacío, que sean disjuntos dos a dos, y que la unión de todos ellos sea exactamente B.</div></details>
+<details class="repaso"><summary>¿Cómo se llama {(a,b) / a∈A ∧ b∈B} y cómo se simboliza?</summary><div class="ans">Producto cartesiano de A y B, se simboliza A × B.</div></details>
+<details class="repaso"><summary>¿Qué es un multiconjunto?</summary><div class="ans">Una colección bien definida de objetos donde la repetición de elementos sí es significativa (a diferencia de un conjunto ordinario, donde no importa).</div></details>
+<footer class="unitend">— Fin de la Unidad 4 (Conjuntos) —</footer>
+
+    <div class="unit-title" id="glosario"><div class="k">Material de referencia</div><h2>Glosario de símbolos y términos</h2></div>
+    <dl class="glossary"><dt>~ , ¬, p̅</dt><dd>Negación lógica (no p).</dd><dt>∧</dt><dd>Conjunción lógica (y).</dd><dt>∨</dt><dd>Disyunción inclusiva (o).</dd><dt>⊻ , ⊕</dt><dd>Disyunción exclusiva (o bien... o bien).</dd><dt>→</dt><dd>Condicional simple (si... entonces).</dd><dt>↔</dt><dd>Condicional doble / bicondicional (si y sólo si).</dd><dt>≡</dt><dd>Equivalencia lógica entre proposiciones.</dd><dt>⇒</dt><dd>Consecuencia (implicación) lógica entre proposiciones.</dd><dt>⊢</dt><dd>Símbolo de razonamiento deductivo: «por lo tanto».</dd><dt>V₀</dt><dd>Tautología (proposición siempre verdadera).</dd><dt>F₀</dt><dd>Contradicción (proposición siempre falsa).</dd><dt>∀x</dt><dd>Cuantificador universal: para todo x.</dd><dt>∃x</dt><dd>Cuantificador existencial: existe un x.</dd><dt>P(x)</dt><dd>Función proposicional o predicado en la variable x.</dd><dt>∈ , ∉</dt><dd>Pertenencia / no pertenencia de un elemento a un conjunto.</dd><dt>⊆</dt><dd>Inclusión amplia (subconjunto).</dd><dt>⊂</dt><dd>Inclusión estricta (subconjunto propio).</dd><dt>∩</dt><dd>Intersección de conjuntos.</dd><dt>∪</dt><dd>Unión de conjuntos.</dd><dt>~A, A̅, Aᶜ</dt><dd>Complemento (absoluto) de un conjunto A.</dd><dt>B − A</dt><dd>Complemento de A relativo a B (diferencia).</dd><dt>∅</dt><dd>Conjunto vacío.</dd><dt>U</dt><dd>Conjunto universal / universo de discurso.</dd><dt>|A|</dt><dd>Cardinalidad del conjunto A (cantidad de elementos).</dd><dt>P(A), 2^A</dt><dd>Conjunto potencia de A (familia de todos sus subconjuntos).</dd><dt>A × B</dt><dd>Producto cartesiano de A y B.</dd><dt>(a,b)</dt><dd>Par ordenado de a y b.</dd><dt>Σ</dt><dd>Sumatoria (notación sigma).</dd><dt>aₖ</dt><dd>Término k-ésimo de una sucesión.</dd><dt>HI</dt><dd>Hipótesis Inductiva, en una demostración por inducción.</dd><dt>n₀</dt><dd>Primer natural para el que se verifica la base inductiva.</dd></dl>
+    <footer class="unitend">— Fin del glosario —</footer>
+    
+  </div>
+</main>
+</div>
+</body>
+</html>
